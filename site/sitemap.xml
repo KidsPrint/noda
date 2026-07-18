@@ -55,4 +55,9 @@
 <changefreq>weekly</changefreq>
 <priority>0.6</priority>
 </url>
+<url>
+<loc>https://noda-development.ru/blog/ii-ili-obychnyj-soft</loc>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
 </urlset>

@@ -355,6 +355,64 @@
   }
 
   /* =====================================================
+     2b. latest blog posts on the home page
+     ===================================================== */
+  var MONTHS_RU = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+  function fdateRu(iso) {
+    var p = String(iso || '').split('-');
+    if (p.length !== 3) return iso || '';
+    return (+p[2]) + ' ' + MONTHS_RU[+p[1] - 1] + ' ' + p[0];
+  }
+  var NXB_NODES = '<svg viewBox="0 0 200 140" fill="none" aria-hidden="true"><g stroke="rgba(255,255,255,.55)" stroke-width="1.4"><line x1="30" y1="110" x2="80" y2="40"/><line x1="80" y1="40" x2="150" y2="80"/><line x1="150" y1="80" x2="185" y2="25"/><line x1="30" y1="110" x2="150" y2="80"/></g><circle cx="30" cy="110" r="6" fill="rgba(255,255,255,.85)"/><circle cx="80" cy="40" r="8" fill="rgba(255,255,255,.9)"/><circle cx="150" cy="80" r="5" fill="rgba(255,255,255,.8)"/><circle cx="185" cy="25" r="7" fill="rgba(255,255,255,.85)"/></svg>';
+
+  var blogSecRequested = false;
+  function buildBlogSection() {
+    if (EN) return; /* статьи пока только на русском */
+    var path = location.pathname;
+    if (path !== '/' && path !== '/index.html') return;
+    if (document.getElementById('blog-home')) return;
+    var anchor = document.getElementById('zayavka') || document.getElementById('contact');
+    if (!anchor) return;
+
+    if (!window.NODA_BLOG) {
+      if (blogSecRequested) return;
+      blogSecRequested = true;
+      var s = document.createElement('script');
+      s.src = '/blog/articles.js';
+      s.onload = buildBlogSection;
+      document.head.appendChild(s);
+      return;
+    }
+
+    var posts = window.NODA_BLOG.slice(0, 4);
+    if (!posts.length) return;
+
+    var cards = posts.map(function (a) {
+      return '<a class="nxb-card" href="/blog/' + a.slug + '/">' +
+        '<span class="nxb-cover"><i class="nxb-g' + (a.grad || 1) + '"></i>' + NXB_NODES +
+          '<span class="nxb-tag">' + a.tag + '</span></span>' +
+        '<span class="nxb-body">' +
+          '<span class="nxb-meta"><span>' + fdateRu(a.date) + '</span><i></i><span>' + a.mins + ' мин</span></span>' +
+          '<h3>' + a.title + '</h3>' +
+          '<span class="nxb-more">Читать <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
+        '</span></a>';
+    }).join('');
+
+    var sec = el('<section class="pad nxb-sec" id="blog-home"><div class="wrap">' +
+      '<div class="shead">' +
+        '<span class="eyebrow" style="opacity:1;transform:none">Блог</span>' +
+        '<h2 class="disp" style="opacity:1;transform:none">Читайте, как это<br>работает на практике</h2>' +
+        '<p style="opacity:1;transform:none">Внедрение ИИ, боты и CRM — без воды: только то, что можно применить в своём бизнесе уже завтра.</p>' +
+      '</div>' +
+      '<div class="nxb-grid">' + cards + '</div>' +
+      '<div class="nxb-all-row"><a class="nx-btn nx-btn--ghost" href="/blog/">Смотреть все статьи ' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>' +
+    '</div></section>');
+
+    anchor.parentNode.insertBefore(sec, anchor);
+  }
+
+  /* =====================================================
      3. add-on modules feed the form instead of the calc
      ===================================================== */
   var addonHooked = false;
@@ -438,6 +496,7 @@
   function apply() {
     killLegacy();
     buildLeadSection();
+    buildBlogSection();
     buildFab();
     hookAddons();
     fixLinks();
