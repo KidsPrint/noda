@@ -388,8 +388,11 @@
     if (!posts.length) return;
 
     var cards = posts.map(function (a) {
+      var art = a.cover
+        ? '<i class="nxb-img" style="background:url(\'' + a.cover.replace(/'/g, '%27') + '\') center/cover no-repeat"></i>'
+        : '<i class="nxb-g' + (a.grad || 1) + '"></i>' + NXB_NODES;
       return '<a class="nxb-card" href="/blog/' + a.slug + '/">' +
-        '<span class="nxb-cover"><i class="nxb-g' + (a.grad || 1) + '"></i>' + NXB_NODES +
+        '<span class="nxb-cover">' + art +
           '<span class="nxb-tag">' + a.tag + '</span></span>' +
         '<span class="nxb-body">' +
           '<span class="nxb-meta"><span>' + fdateRu(a.date) + '</span><i></i><span>' + a.mins + ' мин</span></span>' +

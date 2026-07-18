@@ -479,6 +479,7 @@
   border-radius: 999px;
   padding: 7px 11px;
 }
+.nxb-cover i.nxb-img::before { display: none; }
 /* cover gradient presets (mirror of blog.css) */
 .nxb-g1 { background: linear-gradient(135deg,#2b2261,#5b3fd4 55%,#8b7cff); }
 .nxb-g2 { background: linear-gradient(135deg,#0c3440,#0e7490 55%,#3be0e0); }

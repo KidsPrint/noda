@@ -1,5 +1,6 @@
 User-Agent: *
 Allow: /
+Disallow: /blog/konstruktor/
 
 Host: https://noda-development.ru
 Sitemap: https://noda-development.ru/sitemap.xml

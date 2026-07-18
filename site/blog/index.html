@@ -81,8 +81,11 @@
   var activeTag = '';
 
   function card(a, feat) {
+    var art = a.cover
+      ? '<div class="bcover-art bcover-art--img" style="background:url(\'' + a.cover.replace(/'/g, '%27') + '\') center/cover no-repeat"></div>'
+      : '<div class="bcover-art" style="background:var(--cg-' + (a.grad || 1) + ')"></div>' + NODES_SVG;
     return '<a class="bcard' + (feat ? ' bcard--feat' : '') + '" href="/blog/' + a.slug + '/">' +
-      '<div class="bcover"><div class="bcover-art" style="background:var(--cg-' + (a.grad || 1) + ')"></div>' + NODES_SVG +
+      '<div class="bcover">' + art +
         '<span class="bc-tag">' + a.tag + '</span></div>' +
       '<div class="bbody">' +
         '<div class="bmeta"><span>' + fdate(a.date) + '</span><i></i><span>' + a.mins + ' мин чтения</span></div>' +

@@ -123,6 +123,14 @@ body{background:var(--bg)}
 .kprev-bar span{margin-left:8px}
 .kprev-inner{padding:10px clamp(16px,3vw,40px) 40px}
 
+/* cover image controls */
+.kcov-row{display:flex;gap:8px}
+.kcov-row .kin{flex:1}
+.kcov-btn{padding:11px 16px;font-size:12.5px;white-space:nowrap}
+.kcov-actions{display:flex;gap:8px;margin-top:8px}
+.kb-file{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.kb-file .kbtn{padding:9px 14px;font-size:12px}
+
 /* steps helper */
 .ksteps{font-size:13.5px;color:#9a9aac;line-height:1.7}
 .ksteps b{color:var(--ink)}
@@ -199,8 +207,21 @@ body{background:var(--bg)}
           <div class="khint">Статья будет доступна по адресу <code style="color:#9fd8ff">/blog/<b id="slugEcho">…</b>/</code></div>
         </div>
         <div class="kf">
-          <label>Обложка</label>
+          <label>Обложка — градиент</label>
           <div class="kgrads" id="grads"></div>
+        </div>
+        <div class="kf">
+          <label>…или своя картинка</label>
+          <div class="kcov-row">
+            <input class="kin" id="mCover" placeholder="URL картинки (https://… или /blog/…/cover.jpg)">
+            <button class="kbtn kbtn-ghost kcov-btn" id="btnCoverFile" type="button">Выбрать файл</button>
+            <input type="file" id="coverFile" accept="image/*" hidden>
+          </div>
+          <div class="kcov-actions" id="coverActions" hidden>
+            <button class="kbtn kbtn-ghost kcov-btn" id="btnCoverDl" type="button">⬇ Скачать обложку</button>
+            <button class="kbtn kbtn-danger kcov-btn" id="btnCoverRm" type="button">Убрать картинку</button>
+          </div>
+          <div class="khint">Картинка заменяет градиент. Если выбрали файл — скачайте его кнопкой выше и загрузите на хостинг в папку статьи вместе с <code style="color:#9fd8ff">index.html</code>.</div>
         </div>
       </section>
 
@@ -237,7 +258,8 @@ body{background:var(--bg)}
         <ol class="ksteps" style="margin-top:16px">
           <li><b>Скачайте оба файла</b> кнопками выше.</li>
           <li>На хостинге создайте папку <code>/blog/&lt;slug&gt;/</code> и загрузите туда <code>index.html</code>.</li>
-          <li>Замените файл <code>/blog/articles.js</code> скачанной версией — статья появится в списке блога.</li>
+          <li>Если прикрепляли картинки файлами — скачайте их кнопками «⬇» и загрузите в ту же папку (обложка — <code>cover.jpg</code>, картинки блоков — под своими именами).</li>
+          <li>Замените файл <code>/blog/articles.js</code> скачанной версией — статья появится в списке блога и на главной.</li>
         </ol>
         <div class="khint">Черновик сохраняется автоматически в этом браузере — можно вернуться и продолжить позже.</div>
       </section>
@@ -283,9 +305,11 @@ body{background:var(--bg)}
   };
 
   /* ---------- state ---------- */
-  var meta = { title: '', desc: '', tag: '', date: today(), mins: '', slug: '', slugTouched: false, grad: 1 };
+  var meta = { title: '', desc: '', tag: '', date: today(), mins: '', slug: '', slugTouched: false, grad: 1, cover: '', coverAuto: false };
   var blocks = [];
   var uid = 1;
+  /* runtime-only: attached files (not persisted to localStorage) */
+  var coverBlob = null, coverBlobUrl = '', coverExt = 'jpg';
 
   function today() {
     var d = new Date();
@@ -339,7 +363,15 @@ body{background:var(--bg)}
     hr:      { name: 'Разделитель',  make: function () { return {}; } }
   };
 
-  function blockHtml(b) {
+  function coverCss(forExport) {
+    if (meta.cover) {
+      var url = (!forExport && coverBlobUrl) ? coverBlobUrl : meta.cover;
+      return "url('" + url.replace(/'/g, '%27') + "') center/cover no-repeat";
+    }
+    return 'var(--cg-' + meta.grad + ')';
+  }
+
+  function blockHtml(b, forExport) {
     switch (b.t) {
       case 'h2': return '<h2>' + fmt(b.text) + '</h2>';
       case 'h3': return '<h3>' + fmt(b.text) + '</h3>';
@@ -354,7 +386,8 @@ body{background:var(--bg)}
         return '<div class="callout"><span class="ci">' + CALLOUT_ICON + '</span><p>' + fmt(b.text) + '</p></div>';
       case 'img':
         if (!b.src) return '';
-        return '<figure><img src="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
+        var isrc = (!forExport && b._blobUrl) ? b._blobUrl : b.src;
+        return '<figure><img src="' + esc(isrc) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
           (b.cap ? '<figcaption>' + fmt(b.cap) + '</figcaption>' : '') + '</figure>';
       case 'code': return '<pre>' + esc(b.text) + '</pre>';
       case 'btn':  return '<p><a class="abtn" href="' + esc(b.href || '#') + '">' + esc(b.text || 'Кнопка') + '</a></p>';
@@ -362,8 +395,8 @@ body{background:var(--bg)}
     }
     return '';
   }
-  function bodyHtml() {
-    return blocks.map(blockHtml).filter(Boolean).join('\n');
+  function bodyHtml(forExport) {
+    return blocks.map(function (b) { return blockHtml(b, forExport); }).filter(Boolean).join('\n');
   }
 
   /* ---------- editor rendering ---------- */
@@ -426,7 +459,44 @@ body{background:var(--bg)}
         case 'callout':
           card.appendChild(inputEl('Текст совета или важного замечания', b.text, 'text', b, 'ta')); break;
         case 'img':
-          card.appendChild(inputEl('URL изображения (https://…)', b.src, 'src', b));
+          var srcIn = inputEl('URL изображения (https://…) — или выберите файл ниже', b.src, 'src', b);
+          card.appendChild(srcIn);
+          var fRow = document.createElement('div');
+          fRow.className = 'kb-file';
+          var fPick = document.createElement('button');
+          fPick.type = 'button';
+          fPick.className = 'kbtn kbtn-ghost';
+          fPick.textContent = b._fname ? ('📎 ' + b._fname) : 'Выбрать файл…';
+          var fInput = document.createElement('input');
+          fInput.type = 'file';
+          fInput.accept = 'image/*';
+          fInput.hidden = true;
+          fPick.addEventListener('click', function () { fInput.click(); });
+          fInput.addEventListener('change', function () {
+            var f = fInput.files && fInput.files[0];
+            if (!f) return;
+            var dot = f.name.lastIndexOf('.');
+            var base = dot > 0 ? f.name.slice(0, dot) : f.name;
+            var ext = dot > 0 ? f.name.slice(dot + 1).toLowerCase() : 'jpg';
+            b._fname = (translit(base) || 'img') + '.' + ext;
+            b.src = '/blog/' + (meta.slug || 'novaya-statya') + '/' + b._fname;
+            if (b._blobUrl) URL.revokeObjectURL(b._blobUrl);
+            b._blob = f;
+            b._blobUrl = URL.createObjectURL(f);
+            renderBlocks();
+            refresh();
+          });
+          fRow.appendChild(fPick);
+          fRow.appendChild(fInput);
+          if (b._blob) {
+            var fDl = document.createElement('button');
+            fDl.type = 'button';
+            fDl.className = 'kbtn kbtn-ghost';
+            fDl.textContent = '⬇ Скачать файл';
+            fDl.addEventListener('click', function () { downloadBlob(b._fname, b._blob); });
+            fRow.appendChild(fDl);
+          }
+          card.appendChild(fRow);
           card.appendChild(inputEl('Alt-текст для SEO', b.alt, 'alt', b));
           card.appendChild(inputEl('Подпись (необязательно)', b.cap, 'cap', b));
           break;
@@ -445,6 +515,15 @@ body{background:var(--bg)}
   /* ---------- preview ---------- */
   function refresh() {
     if (!meta.slugTouched) meta.slug = translit(meta.title);
+    var slug = meta.slug || 'novaya-statya';
+    /* keep auto-generated file paths in sync with the slug */
+    if (meta.cover && meta.coverAuto) {
+      meta.cover = '/blog/' + slug + '/cover.' + coverExt;
+      document.getElementById('mCover').value = meta.cover;
+    }
+    blocks.forEach(function (b) {
+      if (b.t === 'img' && b._fname) b.src = '/blog/' + slug + '/' + b._fname;
+    });
     document.getElementById('mSlug').value = meta.slug;
     document.getElementById('slugEcho').textContent = meta.slug || '…';
     document.getElementById('prevUrl').textContent = 'noda-development.ru/blog/' + (meta.slug || '…') + '/';
@@ -453,19 +532,32 @@ body{background:var(--bg)}
     document.getElementById('pvTag2').textContent = meta.tag || 'Рубрика';
     document.getElementById('pvDate').textContent = fdate(meta.date);
     document.getElementById('pvMins').textContent = (meta.mins || autoMins()) + ' мин чтения';
-    document.getElementById('pvCover').style.background = 'var(--cg-' + meta.grad + ')';
-    document.getElementById('pvBody').innerHTML = bodyHtml() || '<p style="color:#62626f">Добавьте блоки слева — статья соберётся здесь в реальном времени.</p>';
+    document.getElementById('pvCover').style.background = coverCss(false);
+    var pvNodes = document.querySelector('.kprev-inner .art-cover .bnodes');
+    if (pvNodes) pvNodes.style.display = meta.cover ? 'none' : '';
+    document.getElementById('coverActions').hidden = !meta.cover;
+    document.getElementById('btnCoverDl').hidden = !coverBlob;
+    document.getElementById('pvBody').innerHTML = bodyHtml(false) || '<p style="color:#62626f">Добавьте блоки слева — статья соберётся здесь в реальном времени.</p>';
     save();
   }
 
-  /* ---------- persistence ---------- */
+  /* ---------- persistence (runtime _keys with attached files are skipped) ---------- */
   function save() {
-    try { localStorage.setItem('noda_kon_draft', JSON.stringify({ meta: meta, blocks: blocks })); } catch (e) {}
+    try {
+      localStorage.setItem('noda_kon_draft', JSON.stringify({ meta: meta, blocks: blocks }, function (k, v) {
+        return k.charAt(0) === '_' ? undefined : v;
+      }));
+    } catch (e) {}
   }
   function load() {
     try {
       var d = JSON.parse(localStorage.getItem('noda_kon_draft'));
-      if (d && d.meta) { meta = d.meta; blocks = d.blocks || []; }
+      if (d && d.meta) {
+        meta = d.meta;
+        blocks = d.blocks || [];
+        var m = /\.(\w+)$/.exec(meta.cover || '');
+        if (m) coverExt = m[1];
+      }
     } catch (e) {}
   }
 
@@ -476,7 +568,9 @@ body{background:var(--bg)}
     var desc = esc(meta.desc || '');
     var tag = esc(meta.tag || 'Блог');
     var mins = meta.mins || autoMins();
-    var body = bodyHtml().split('\n').map(function (l) { return l; }).join('\n');
+    var body = bodyHtml(true);
+    var coverArt = '<div class="bcover-art" style="background:' + coverCss(true) + '"></div>';
+    var coverNodes = meta.cover ? '' : ('\n      ' + NODES_SVG);
     return '<!DOCTYPE html>\n<html lang="ru">\n<head>\n' +
       '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
       '<title>' + title + ' · Блог NODA</title>\n' +
@@ -509,7 +603,7 @@ body{background:var(--bg)}
       '      <span>' + tag + '</span>\n    </nav>\n' +
       '    <h1>' + title + '</h1>\n' +
       '    <div class="art-meta">\n      <span class="tag">' + tag + '</span>\n      <span>' + fdate(meta.date) + '</span><i></i>\n      <span>' + mins + ' мин чтения</span>\n    </div>\n' +
-      '    <div class="art-cover" aria-hidden="true">\n      <div class="bcover-art" style="background:var(--cg-' + meta.grad + ')"></div>\n      ' + NODES_SVG + '\n    </div>\n  </section>\n\n' +
+      '    <div class="art-cover" aria-hidden="true">\n      ' + coverArt + coverNodes + '\n    </div>\n  </section>\n\n' +
       '  <article class="art-body">\n' + body + '\n  </article>\n\n' +
       '  <section class="art-cta">\n    <h2>Хотите так же — но в своём бизнесе?</h2>\n' +
       '    <p>Расскажите о задаче: за один разговор предложим решение, сроки и смету. Бесплатно и без обязательств.</p>\n' +
@@ -523,14 +617,16 @@ body{background:var(--bg)}
       '    <span class="cr">© 2026 NODA · Автоматизация и ИИ</span>\n  </div>\n</footer>\n</body>\n</html>\n';
   }
 
-  function download(name, content, type) {
-    var blob = new Blob([content], { type: type || 'text/html;charset=utf-8' });
+  function downloadBlob(name, blob) {
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = name;
     document.body.appendChild(a);
     a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+  }
+  function download(name, content, type) {
+    downloadBlob(name, new Blob([content], { type: type || 'text/html;charset=utf-8' }));
   }
 
   document.getElementById('btnHtml').addEventListener('click', function () {
@@ -553,6 +649,7 @@ body{background:var(--bg)}
         mins: +(meta.mins || autoMins()),
         grad: +meta.grad
       };
+      if (meta.cover) entry.cover = meta.cover;
       list.unshift(entry);
       var out = '/* NODA · Blog — список статей. Новые добавляйте в начало массива.\n' +
         '   Проще всего — через конструктор: /blog/konstruktor/ */\n' +
@@ -580,6 +677,38 @@ body{background:var(--bg)}
   document.getElementById('mSlug').addEventListener('input', function () {
     meta.slugTouched = true;
     meta.slug = translit(this.value) || this.value;
+    refresh();
+  });
+
+  /* cover image: manual URL or attached file */
+  document.getElementById('mCover').addEventListener('input', function () {
+    meta.cover = this.value.trim();
+    meta.coverAuto = false;
+    if (coverBlobUrl) { URL.revokeObjectURL(coverBlobUrl); coverBlobUrl = ''; coverBlob = null; }
+    refresh();
+  });
+  document.getElementById('btnCoverFile').addEventListener('click', function () {
+    document.getElementById('coverFile').click();
+  });
+  document.getElementById('coverFile').addEventListener('change', function () {
+    var f = this.files && this.files[0];
+    if (!f) return;
+    var dot = f.name.lastIndexOf('.');
+    coverExt = dot > 0 ? f.name.slice(dot + 1).toLowerCase() : 'jpg';
+    if (coverBlobUrl) URL.revokeObjectURL(coverBlobUrl);
+    coverBlob = f;
+    coverBlobUrl = URL.createObjectURL(f);
+    meta.coverAuto = true;
+    meta.cover = '/blog/' + (meta.slug || 'novaya-statya') + '/cover.' + coverExt;
+    refresh();
+  });
+  document.getElementById('btnCoverDl').addEventListener('click', function () {
+    if (coverBlob) downloadBlob('cover.' + coverExt, coverBlob);
+  });
+  document.getElementById('btnCoverRm').addEventListener('click', function () {
+    meta.cover = '';
+    meta.coverAuto = false;
+    if (coverBlobUrl) { URL.revokeObjectURL(coverBlobUrl); coverBlobUrl = ''; coverBlob = null; }
     refresh();
   });
 
@@ -624,8 +753,9 @@ body{background:var(--bg)}
   /* clear / demo */
   document.getElementById('btnClear').addEventListener('click', function () {
     if (!confirm('Удалить черновик и начать заново?')) return;
-    meta = { title: '', desc: '', tag: '', date: today(), mins: '', slug: '', slugTouched: false, grad: 1 };
+    meta = { title: '', desc: '', tag: '', date: today(), mins: '', slug: '', slugTouched: false, grad: 1, cover: '', coverAuto: false };
     blocks = [];
+    if (coverBlobUrl) { URL.revokeObjectURL(coverBlobUrl); coverBlobUrl = ''; coverBlob = null; }
     syncMetaInputs();
     renderBlocks();
     refresh();
@@ -635,8 +765,9 @@ body{background:var(--bg)}
     meta = {
       title: 'Пять процессов, которые стоит автоматизировать первыми',
       desc: 'Короткий чек-лист: где автоматизация окупается быстрее всего и как не начать не с того.',
-      tag: 'Кейсы', date: today(), mins: '', slug: '', slugTouched: false, grad: 5
+      tag: 'Кейсы', date: today(), mins: '', slug: '', slugTouched: false, grad: 5, cover: '', coverAuto: false
     };
+    if (coverBlobUrl) { URL.revokeObjectURL(coverBlobUrl); coverBlobUrl = ''; coverBlob = null; }
     blocks = [
       { t: 'p', id: uid++, text: 'Автоматизация даёт максимум эффекта там, где **много рутины и мало решений**. Вот с чего мы советуем начинать почти каждому клиенту.' },
       { t: 'h2', id: uid++, text: 'С чего начать' },
@@ -657,6 +788,7 @@ body{background:var(--bg)}
     document.getElementById('mDate').value = meta.date;
     document.getElementById('mMins').value = meta.mins;
     document.getElementById('mSlug').value = meta.slug;
+    document.getElementById('mCover').value = meta.cover || '';
     document.querySelectorAll('.kgrad').forEach(function (g, i) {
       g.classList.toggle('on', i + 1 === +meta.grad);
     });
