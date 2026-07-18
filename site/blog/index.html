@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Блог NODA — автоматизация, ИИ и боты для бизнеса</title>
+<meta name="description" content="Статьи NODA о внедрении ИИ, Telegram-ботах, CRM и автоматизации: практика, цифры и разборы без воды.">
+<meta name="theme-color" content="#060608">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://noda-development.ru/blog/">
+<meta property="og:title" content="Блог NODA — автоматизация, ИИ и боты для бизнеса">
+<meta property="og:description" content="Практика внедрения ИИ, Telegram-боты, CRM и аналитика — без воды.">
+<meta property="og:type" content="website">
+<link rel="preload" href="/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/blog/blog.css">
+<link rel="stylesheet" href="/custom/upgrade.css">
+<script src="/custom/upgrade.js" defer></script>
+</head>
+<body>
+<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="bnav">
+  <div class="bnav-in">
+    <a class="brand" href="/">
+      <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#bg1)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
+      NODA
+    </a>
+    <nav class="bnav-links">
+      <a href="/">Главная</a>
+      <a href="/uslugi/">Услуги</a>
+      <a href="/blog/" class="act">Блог</a>
+      <a href="/#contact">Контакты</a>
+    </nav>
+    <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="bhero">
+    <span class="eyebrow"><i></i>Блог NODA</span>
+    <h1>Автоматизация <span class="accent">без воды</span> — практика, цифры, разборы</h1>
+    <p>Пишем о том, что делаем руками каждый день: внедрение ИИ, Telegram-боты, CRM и аналитика. Только то, что можно применить в своём бизнесе уже завтра.</p>
+    <div class="btags" id="tags"></div>
+  </section>
+
+  <section class="bgrid" id="grid" aria-live="polite"></section>
+</main>
+
+<footer class="bfoot">
+  <div class="bfoot-in">
+    <a class="brand" href="/">
+      <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#bg2)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
+      NODA
+    </a>
+    <nav class="bfoot-links">
+      <a href="/uslugi/">Услуги</a>
+      <a href="/blog/">Блог</a>
+      <a href="/#zayavka">Заявка</a>
+      <a href="https://t.me/noda_development" target="_blank" rel="noopener">Telegram</a>
+      <a href="https://wa.me/79096860799" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="tel:+79096860799">+7 (909) 686-07-99</a>
+    </nav>
+    <span class="cr">© 2026 NODA · Автоматизация и ИИ</span>
+  </div>
+</footer>
+
+<script src="/blog/articles.js"></script>
+<script>
+(function () {
+  var MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  function fdate(iso) {
+    var p = iso.split('-');
+    return (+p[2]) + ' ' + MONTHS[+p[1] - 1] + ' ' + p[0];
+  }
+  var NODES_SVG = '<svg class="bnodes" viewBox="0 0 200 140" fill="none"><g stroke="rgba(255,255,255,.55)" stroke-width="1.4"><line x1="30" y1="110" x2="80" y2="40"/><line x1="80" y1="40" x2="150" y2="80"/><line x1="150" y1="80" x2="185" y2="25"/><line x1="30" y1="110" x2="150" y2="80"/></g><circle cx="30" cy="110" r="6" fill="rgba(255,255,255,.85)"/><circle cx="80" cy="40" r="8" fill="rgba(255,255,255,.9)"/><circle cx="150" cy="80" r="5" fill="rgba(255,255,255,.8)"/><circle cx="185" cy="25" r="7" fill="rgba(255,255,255,.85)"/></svg>';
+
+  var list = window.NODA_BLOG || [];
+  var grid = document.getElementById('grid');
+  var tagsBox = document.getElementById('tags');
+  var activeTag = '';
+
+  function card(a, feat) {
+    return '<a class="bcard' + (feat ? ' bcard--feat' : '') + '" href="/blog/' + a.slug + '/">' +
+      '<div class="bcover"><div class="bcover-art" style="background:var(--cg-' + (a.grad || 1) + ')"></div>' + NODES_SVG +
+        '<span class="bc-tag">' + a.tag + '</span></div>' +
+      '<div class="bbody">' +
+        '<div class="bmeta"><span>' + fdate(a.date) + '</span><i></i><span>' + a.mins + ' мин чтения</span></div>' +
+        '<h3>' + a.title + '</h3>' +
+        '<p>' + a.desc + '</p>' +
+        '<span class="bmore">Читать статью <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
+      '</div></a>';
+  }
+
+  function render() {
+    var items = activeTag ? list.filter(function (a) { return a.tag === activeTag; }) : list;
+    if (!items.length) {
+      grid.innerHTML = '<div class="bempty">Пока нет статей в этой рубрике — загляните позже.</div>';
+      return;
+    }
+    var html = '';
+    items.forEach(function (a, i) {
+      html += card(a, i === 0 && !activeTag);
+    });
+    grid.innerHTML = html;
+  }
+
+  function renderTags() {
+    var uniq = [];
+    list.forEach(function (a) { if (uniq.indexOf(a.tag) === -1) uniq.push(a.tag); });
+    var html = '<button class="btag on" data-tag="">Все статьи</button>';
+    uniq.forEach(function (t) { html += '<button class="btag" data-tag="' + t + '">' + t + '</button>'; });
+    tagsBox.innerHTML = html;
+    tagsBox.addEventListener('click', function (e) {
+      var b = e.target.closest('.btag');
+      if (!b) return;
+      activeTag = b.getAttribute('data-tag');
+      tagsBox.querySelectorAll('.btag').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      render();
+    });
+  }
+
+  renderTags();
+  render();
+})();
+</script>
+</body>
+</html>

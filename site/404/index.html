@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>404 — страница не найдена · NODA</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#060608">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Unbounded;font-weight:200 900;font-display:swap;src:url(/fonts/unbounded-cyrillic.woff2) format("woff2");unicode-range:u+0301,u+0400-045f,u+0490-0491,u+04b0-04b1,u+2116}
+@font-face{font-family:Unbounded;font-weight:200 900;font-display:swap;src:url(/fonts/unbounded-latin.woff2) format("woff2");unicode-range:u+00??,u+0131,u+0152-0153,u+2000-206f,u+2122}
+@font-face{font-family:Inter;font-weight:100 900;font-display:swap;src:url(/fonts/inter-cyrillic.woff2) format("woff2");unicode-range:u+0301,u+0400-045f,u+0490-0491,u+04b0-04b1,u+2116}
+@font-face{font-family:Inter;font-weight:100 900;font-display:swap;src:url(/fonts/inter-latin.woff2) format("woff2");unicode-range:u+00??,u+0131,u+0152-0153,u+2000-206f,u+2122}
+:root{
+  --bg:#060608; --ink:#ececf1; --muted:#9a9aac; --line:hsla(0,0%,100%,.08);
+  --violet:#7b5cff; --cyan:#3be0e0; --magenta:#ff5ca8;
+  --grad:linear-gradient(120deg,#8b7cff,#5ac8ff 45%,#ff79c0);
+  --ease:cubic-bezier(.2,.7,.15,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:Inter,system-ui,sans-serif;
+  overflow-x:hidden;
+  display:flex; flex-direction:column;
+}
+#net{position:fixed;inset:0;z-index:0;opacity:.85}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none;animation:drift 16s ease-in-out infinite alternate}
+.orb-1{width:520px;height:520px;left:-140px;top:-160px;background:radial-gradient(circle,rgba(123,92,255,.22),transparent 65%)}
+.orb-2{width:460px;height:460px;right:-120px;bottom:-140px;background:radial-gradient(circle,rgba(255,92,168,.16),transparent 65%);animation-delay:-8s}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+
+.top{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(20px,4vw,44px)}
+.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font:700 18px/1 Unbounded,sans-serif;letter-spacing:.02em}
+.brand svg{width:32px;height:32px}
+.top-links{display:flex;gap:8px}
+.top-links a{color:var(--muted);text-decoration:none;font:600 13.5px/1 Inter,sans-serif;padding:10px 16px;border-radius:999px;border:1px solid transparent;transition:.25s var(--ease)}
+.top-links a:hover{color:var(--ink);border-color:var(--line);background:rgba(255,255,255,.04)}
+@media (max-width:560px){.top-links a{padding:9px 11px;font-size:12.5px}}
+
+main{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px 70px}
+
+.pill{
+  display:inline-flex;align-items:center;gap:9px;
+  font:600 12.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;
+  color:#b9aefc;background:rgba(123,92,255,.1);border:1px solid rgba(123,92,255,.35);
+  border-radius:999px;padding:9px 16px;margin-bottom:34px;
+  animation:in .7s var(--ease) both;
+}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--magenta);animation:blink 1.4s ease infinite;font-style:normal}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.code{
+  position:relative;
+  font:600 clamp(120px,26vw,300px)/0.95 Unbounded,sans-serif;
+  letter-spacing:-.02em;
+  background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:in .7s .08s var(--ease) both;
+  user-select:none;
+}
+.code::before,.code::after{
+  content:"404";position:absolute;inset:0;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:0;
+}
+.code::before{animation:gl1 5s steps(1) infinite}
+.code::after{animation:gl2 5s steps(1) infinite}
+@keyframes gl1{0%,93%,100%{opacity:0;transform:none}94%{opacity:.75;transform:translate(-7px,3px);clip-path:inset(12% 0 55% 0)}96%{opacity:.7;transform:translate(5px,-2px);clip-path:inset(60% 0 8% 0)}98%{opacity:0}}
+@keyframes gl2{0%,90%,100%{opacity:0;transform:none}91%{opacity:.6;transform:translate(6px,2px);clip-path:inset(38% 0 30% 0)}93%{opacity:0}}
+
+h1{
+  font:600 clamp(21px,3.4vw,34px)/1.25 Unbounded,sans-serif;letter-spacing:-.01em;
+  margin:26px 0 14px;animation:in .7s .16s var(--ease) both;
+}
+.sub{
+  color:var(--muted);font-size:clamp(15px,1.6vw,17px);line-height:1.65;max-width:520px;
+  animation:in .7s .24s var(--ease) both;
+}
+.sub b{color:var(--ink);font-weight:600}
+
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:38px;animation:in .7s .32s var(--ease) both}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+  border-radius:999px;padding:16px 28px;font:700 15px/1 Inter,sans-serif;
+  transition:transform .25s var(--ease),box-shadow .25s,border-color .25s;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{color:#0c0c14;background:var(--grad);box-shadow:0 8px 30px rgba(123,92,255,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(123,92,255,.55)}
+.btn-ghost{color:var(--ink);border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.32);transform:translateY(-2px)}
+.btn svg{width:17px;height:17px}
+
+.paths{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:30px;
+  animation:in .7s .4s var(--ease) both;
+}
+.paths span{color:#62626f;font-size:13px;padding:8px 4px}
+.paths a{
+  color:var(--muted);text-decoration:none;font:600 13px/1 Inter,sans-serif;
+  border:1px dashed rgba(255,255,255,.14);border-radius:999px;padding:8px 14px;
+  transition:.25s var(--ease);
+}
+.paths a:hover{color:var(--ink);border-style:solid;border-color:rgba(139,124,255,.5);background:rgba(139,124,255,.08)}
+
+@keyframes in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style>
+<link rel="stylesheet" href="/custom/upgrade.css">
+<script src="/custom/upgrade.js" defer></script>
+</head>
+<body>
+<canvas id="net" aria-hidden="true"></canvas>
+<div class="orb orb-1" aria-hidden="true"></div>
+<div class="orb orb-2" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="/" aria-label="NODA — на главную">
+    <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#g)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
+    NODA
+  </a>
+  <nav class="top-links">
+    <a href="/uslugi/">Услуги</a>
+    <a href="/blog/">Блог</a>
+    <a href="/#contact">Контакты</a>
+  </nav>
+</header>
+
+<main>
+  <span class="pill"><i></i>ERROR&nbsp;404&nbsp;·&nbsp;NODE&nbsp;NOT&nbsp;FOUND</span>
+  <div class="code" aria-hidden="true">404</div>
+  <h1>Этот узел выпал из сети</h1>
+  <p class="sub">Страница переехала, изменила адрес или её никогда не было. <b>Ничего страшного</b> — вся остальная сеть NODA работает без сбоев.</p>
+  <div class="cta">
+    <a class="btn btn-primary" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/></svg>
+      На главную
+    </a>
+    <a class="btn btn-ghost" href="/uslugi/">Смотреть услуги</a>
+    <a class="btn btn-ghost" href="/blog/">Читать блог</a>
+  </div>
+  <div class="paths">
+    <span>Возможно, вы искали:</span>
+    <a href="/uslugi/telegram-boty/">Telegram-боты</a>
+    <a href="/uslugi/vnedrenie-ii/">Внедрение ИИ</a>
+    <a href="/uslugi/crm/">CRM</a>
+    <a href="/#zayavka">Оставить заявку</a>
+  </div>
+</main>
+
+<script>
+/* nodes network background — brand "NODA = nodes" */
+(function(){
+  var c = document.getElementById('net'), x = c.getContext('2d');
+  var W, H, DPR = Math.min(devicePixelRatio || 1, 2), pts = [], mouse = {x:-1e4, y:-1e4};
+  function size(){
+    W = innerWidth; H = innerHeight;
+    c.width = W * DPR; c.height = H * DPR;
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+    x.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var n = Math.min(90, Math.round(W * H / 16000));
+    pts = [];
+    for (var i = 0; i < n; i++) pts.push({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+      r: 1.2 + Math.random() * 1.8
+    });
+  }
+  addEventListener('resize', size); size();
+  addEventListener('pointermove', function(e){ mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener('pointerleave', function(){ mouse.x = -1e4; mouse.y = -1e4; });
+  var COLORS = ['139,124,255', '90,200,255', '255,121,192'];
+  function tick(){
+    x.clearRect(0, 0, W, H);
+    var i, j, p, q, d, dx, dy;
+    for (i = 0; i < pts.length; i++){
+      p = pts[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = W + 20; if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20; if (p.y > H + 20) p.y = -20;
+      dx = p.x - mouse.x; dy = p.y - mouse.y; d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 140 && d > 0.1){ p.x += dx / d * 1.1; p.y += dy / d * 1.1; }
+    }
+    for (i = 0; i < pts.length; i++){
+      p = pts[i];
+      for (j = i + 1; j < pts.length; j++){
+        q = pts[j];
+        dx = p.x - q.x; dy = p.y - q.y; d = dx*dx + dy*dy;
+        if (d < 22500){
+          var a = (1 - Math.sqrt(d) / 150) * .3;
+          x.strokeStyle = 'rgba(' + COLORS[(i + j) % 3] + ',' + a.toFixed(3) + ')';
+          x.lineWidth = 1;
+          x.beginPath(); x.moveTo(p.x, p.y); x.lineTo(q.x, q.y); x.stroke();
+        }
+      }
+    }
+    for (i = 0; i < pts.length; i++){
+      p = pts[i];
+      x.fillStyle = 'rgba(' + COLORS[i % 3] + ',.75)';
+      x.beginPath(); x.arc(p.x, p.y, p.r, 0, 6.284); x.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) tick();
+})();
+</script>
+</body>
+</html>

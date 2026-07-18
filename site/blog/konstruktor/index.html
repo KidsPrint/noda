@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конструктор статей · Блог NODA</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#060608">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/blog/blog.css">
+<style>
+/* ---------- constructor chrome ---------- */
+body{background:var(--bg)}
+.kwrap{max-width:1560px;margin:0 auto;padding:0 clamp(14px,2.5vw,28px)}
+.khead{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:26px 0 20px}
+.khead h1{font:600 clamp(20px,2.6vw,28px)/1.2 Unbounded,sans-serif;letter-spacing:-.01em;margin-right:auto}
+.khead h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.klayout{display:grid;grid-template-columns:minmax(430px,540px) 1fr;gap:20px;align-items:start;padding-bottom:80px}
+@media (max-width:1080px){.klayout{grid-template-columns:1fr}}
+
+.kpanel{
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:var(--r);padding:22px;
+}
+.kpanel + .kpanel{margin-top:16px}
+.kpanel h2{font:600 15px/1 Unbounded,sans-serif;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.kpanel h2 .n{
+  font-size:11px;color:#b9aefc;background:rgba(123,92,255,.12);
+  border:1px solid rgba(123,92,255,.3);border-radius:8px;padding:5px 8px;
+}
+.kf{margin-bottom:14px}
+.kf label{display:block;font:600 11px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8a8a9c;margin-bottom:8px}
+.kin,.kta,.ksel{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;color:var(--ink);font:500 14px/1.45 Inter,sans-serif;
+  padding:11px 13px;outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.kin:focus,.kta:focus,.ksel:focus{border-color:rgba(139,124,255,.6);box-shadow:0 0 0 3px rgba(139,124,255,.14)}
+.kta{resize:vertical;min-height:64px}
+.krow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.krow3{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:12px}
+@media (max-width:560px){.krow,.krow3{grid-template-columns:1fr}}
+.khint{font-size:12px;color:#6d6d7e;margin-top:6px;line-height:1.5}
+
+/* cover picker */
+.kgrads{display:flex;gap:9px;flex-wrap:wrap}
+.kgrad{
+  width:52px;height:38px;border-radius:10px;cursor:pointer;border:2px solid transparent;
+  transition:transform .2s var(--ease),border-color .2s;position:relative;
+}
+.kgrad:hover{transform:translateY(-2px)}
+.kgrad.on{border-color:#fff;box-shadow:0 0 0 3px rgba(139,124,255,.35)}
+
+/* blocks */
+.kblocks{display:flex;flex-direction:column;gap:12px;min-height:40px}
+.kb{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);
+  border-radius:14px;padding:14px;
+  animation:kbin .3s var(--ease);
+}
+@keyframes kbin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.kb-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.kb-type{
+  font:700 11px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  color:#8fd8ff;background:rgba(90,200,255,.1);border:1px solid rgba(90,200,255,.28);
+  border-radius:8px;padding:5px 9px;margin-right:auto;
+}
+.kb-btn{
+  width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);color:#9a9aac;cursor:pointer;
+  display:grid;place-items:center;font-size:13px;transition:.2s;
+}
+.kb-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.3)}
+.kb-btn.del:hover{color:#ff8a8a;border-color:rgba(255,138,138,.5)}
+.kb .kin,.kb .kta{margin-bottom:8px}
+.kb .kin:last-child,.kb .kta:last-child{margin-bottom:0}
+.kb-seg{display:inline-flex;gap:6px;margin-bottom:10px}
+.kb-seg button{
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:#c9c9d6;
+  border-radius:999px;padding:7px 13px;font:600 12px/1 Inter,sans-serif;cursor:pointer;
+}
+.kb-seg button.on{color:#0c0c14;background:var(--grad);border-color:transparent}
+
+/* palette */
+.kpal{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.kpal button{
+  border:1px dashed rgba(255,255,255,.18);background:transparent;color:#c9c9d6;
+  border-radius:999px;padding:9px 14px;font:600 12.5px/1 Inter,sans-serif;cursor:pointer;
+  transition:.2s var(--ease);
+}
+.kpal button:hover{color:var(--ink);border-style:solid;border-color:rgba(139,124,255,.55);background:rgba(139,124,255,.1)}
+
+/* actions */
+.kactions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.kbtn{
+  display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;text-decoration:none;
+  border-radius:999px;padding:14px 22px;font:700 14px/1 Inter,sans-serif;
+  transition:transform .22s var(--ease),box-shadow .22s;
+}
+.kbtn:active{transform:scale(.97)}
+.kbtn-primary{color:#0c0c14;background:var(--grad);box-shadow:0 6px 22px rgba(123,92,255,.35)}
+.kbtn-primary:hover{transform:translateY(-2px)}
+.kbtn-ghost{color:var(--ink);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14)}
+.kbtn-ghost:hover{border-color:rgba(255,255,255,.3)}
+.kbtn-danger{color:#ff9a9a;background:rgba(255,138,138,.07);border:1px solid rgba(255,138,138,.25)}
+.kbtn svg{width:16px;height:16px}
+
+/* preview */
+.kprev{position:sticky;top:88px}
+.kprev-frame{
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--bg);
+  max-height:calc(100vh - 120px);overflow-y:auto;
+}
+.kprev-bar{
+  position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;
+  background:rgba(10,10,16,.9);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding:12px 18px;
+  font:600 12px/1 Inter,sans-serif;color:#8a8a9c;letter-spacing:.06em;
+}
+.kprev-bar i{width:9px;height:9px;border-radius:50%;font-style:normal}
+.kprev-bar i:nth-child(1){background:#ff5f57}.kprev-bar i:nth-child(2){background:#febc2e}.kprev-bar i:nth-child(3){background:#28c840}
+.kprev-bar span{margin-left:8px}
+.kprev-inner{padding:10px clamp(16px,3vw,40px) 40px}
+
+/* steps helper */
+.ksteps{font-size:13.5px;color:#9a9aac;line-height:1.7}
+.ksteps b{color:var(--ink)}
+.ksteps code{
+  font:600 12px/1 ui-monospace,Menlo,monospace;color:#9fd8ff;
+  background:rgba(90,200,255,.08);border:1px solid rgba(90,200,255,.2);
+  border-radius:6px;padding:2px 7px;
+}
+.ksteps li{margin-bottom:10px;margin-left:18px}
+</style>
+</head>
+<body>
+<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="bnav">
+  <div class="bnav-in">
+    <a class="brand" href="/">
+      <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="kg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#kg1)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
+      NODA
+    </a>
+    <nav class="bnav-links">
+      <a href="/">Главная</a>
+      <a href="/uslugi/">Услуги</a>
+      <a href="/blog/" class="act">Блог</a>
+    </nav>
+    <a class="bnav-cta" href="/blog/">← К блогу</a>
+  </div>
+</header>
+
+<main class="kwrap">
+  <div class="khead">
+    <h1>Конструктор <span class="accent">статей</span></h1>
+    <button class="kbtn kbtn-ghost" id="btnDemo" type="button">Заполнить примером</button>
+    <button class="kbtn kbtn-danger" id="btnClear" type="button">Очистить</button>
+  </div>
+
+  <div class="klayout">
+    <!-- ================= editor column ================= -->
+    <div>
+      <section class="kpanel">
+        <h2><span class="n">01</span>О статье</h2>
+        <div class="kf">
+          <label>Заголовок</label>
+          <input class="kin" id="mTitle" placeholder="Например: Как ИИ экономит 40 часов в месяц">
+        </div>
+        <div class="kf">
+          <label>Описание для карточки (1–2 предложения)</label>
+          <textarea class="kta" id="mDesc" rows="2" placeholder="Коротко: о чём статья и какую пользу получит читатель."></textarea>
+        </div>
+        <div class="krow3">
+          <div class="kf">
+            <label>Рубрика</label>
+            <input class="kin" id="mTag" list="tagList" placeholder="Внедрение ИИ">
+            <datalist id="tagList">
+              <option value="Внедрение ИИ"></option>
+              <option value="Telegram-боты"></option>
+              <option value="CRM"></option>
+              <option value="Аналитика"></option>
+              <option value="Кейсы"></option>
+            </datalist>
+          </div>
+          <div class="kf">
+            <label>Дата</label>
+            <input class="kin" id="mDate" type="date">
+          </div>
+          <div class="kf">
+            <label>Минут чтения</label>
+            <input class="kin" id="mMins" type="number" min="1" max="60" placeholder="авто">
+          </div>
+        </div>
+        <div class="kf">
+          <label>Адрес статьи (slug)</label>
+          <input class="kin" id="mSlug" placeholder="генерируется из заголовка">
+          <div class="khint">Статья будет доступна по адресу <code style="color:#9fd8ff">/blog/<b id="slugEcho">…</b>/</code></div>
+        </div>
+        <div class="kf">
+          <label>Обложка</label>
+          <div class="kgrads" id="grads"></div>
+        </div>
+      </section>
+
+      <section class="kpanel">
+        <h2><span class="n">02</span>Содержание</h2>
+        <div class="kblocks" id="blocks"></div>
+        <div class="kpal" id="palette">
+          <button data-t="h2">+ Заголовок</button>
+          <button data-t="h3">+ Подзаголовок</button>
+          <button data-t="p">+ Текст</button>
+          <button data-t="list">+ Список</button>
+          <button data-t="quote">+ Цитата</button>
+          <button data-t="callout">+ Врезка-совет</button>
+          <button data-t="img">+ Изображение</button>
+          <button data-t="code">+ Код</button>
+          <button data-t="btn">+ Кнопка</button>
+          <button data-t="hr">+ Разделитель</button>
+        </div>
+        <div class="khint" style="margin-top:12px">В тексте работает разметка: <code>**жирный**</code> и <code>[ссылка](https://…)</code>.</div>
+      </section>
+
+      <section class="kpanel">
+        <h2><span class="n">03</span>Публикация</h2>
+        <div class="kactions">
+          <button class="kbtn kbtn-primary" id="btnHtml" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            Скачать статью (index.html)
+          </button>
+          <button class="kbtn kbtn-ghost" id="btnJs" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            Скачать articles.js
+          </button>
+        </div>
+        <ol class="ksteps" style="margin-top:16px">
+          <li><b>Скачайте оба файла</b> кнопками выше.</li>
+          <li>На хостинге создайте папку <code>/blog/&lt;slug&gt;/</code> и загрузите туда <code>index.html</code>.</li>
+          <li>Замените файл <code>/blog/articles.js</code> скачанной версией — статья появится в списке блога.</li>
+        </ol>
+        <div class="khint">Черновик сохраняется автоматически в этом браузере — можно вернуться и продолжить позже.</div>
+      </section>
+    </div>
+
+    <!-- ================= preview column ================= -->
+    <div class="kprev">
+      <div class="kprev-frame">
+        <div class="kprev-bar"><i></i><i></i><i></i><span id="prevUrl">noda-development.ru/blog/…</span></div>
+        <div class="kprev-inner">
+          <section class="art-hero" style="padding-top:26px">
+            <nav class="crumbs"><a href="/blog/">Блог</a>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+              <span id="pvTag">Рубрика</span>
+            </nav>
+            <h1 id="pvTitle" style="font-size:clamp(23px,3vw,34px)">Заголовок статьи</h1>
+            <div class="art-meta">
+              <span class="tag" id="pvTag2">Рубрика</span>
+              <span id="pvDate"></span><i></i>
+              <span id="pvMins"></span>
+            </div>
+            <div class="art-cover" style="height:200px" aria-hidden="true">
+              <div class="bcover-art" id="pvCover"></div>
+              <svg class="bnodes" viewBox="0 0 200 140" fill="none"><g stroke="rgba(255,255,255,.55)" stroke-width="1.4"><line x1="30" y1="110" x2="80" y2="40"/><line x1="80" y1="40" x2="150" y2="80"/><line x1="150" y1="80" x2="185" y2="25"/><line x1="30" y1="110" x2="150" y2="80"/></g><circle cx="30" cy="110" r="6" fill="rgba(255,255,255,.85)"/><circle cx="80" cy="40" r="8" fill="rgba(255,255,255,.9)"/><circle cx="150" cy="80" r="5" fill="rgba(255,255,255,.8)"/><circle cx="185" cy="25" r="7" fill="rgba(255,255,255,.85)"/></svg>
+            </div>
+          </section>
+          <article class="art-body" id="pvBody"></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  var CALLOUT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6.5 6.5 0 0 1 4 11.6c-.8.6-1.2 1.4-1.3 2.4h-5.4c-.1-1-.5-1.8-1.3-2.4A6.5 6.5 0 0 1 12 3z"/><path d="M9.5 20h5M10.5 22.5h3"/></svg>';
+  var NODES_SVG = '<svg class="bnodes" viewBox="0 0 200 140" fill="none"><g stroke="rgba(255,255,255,.55)" stroke-width="1.4"><line x1="30" y1="110" x2="80" y2="40"/><line x1="80" y1="40" x2="150" y2="80"/><line x1="150" y1="80" x2="185" y2="25"/><line x1="30" y1="110" x2="150" y2="80"/></g><circle cx="30" cy="110" r="6" fill="rgba(255,255,255,.85)"/><circle cx="80" cy="40" r="8" fill="rgba(255,255,255,.9)"/><circle cx="150" cy="80" r="5" fill="rgba(255,255,255,.8)"/><circle cx="185" cy="25" r="7" fill="rgba(255,255,255,.85)"/></svg>';
+  var BRAND = function (gid) {
+    return '<svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#' + gid + ')"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>';
+  };
+
+  /* ---------- state ---------- */
+  var meta = { title: '', desc: '', tag: '', date: today(), mins: '', slug: '', slugTouched: false, grad: 1 };
+  var blocks = [];
+  var uid = 1;
+
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function fdate(iso) {
+    var p = (iso || today()).split('-');
+    return (+p[2]) + ' ' + MONTHS[+p[1] - 1] + ' ' + p[0];
+  }
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  /* mini-markdown: **bold**, [text](url) */
+  function fmt(s) {
+    return esc(s)
+      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  }
+  var TR = { а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'j',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya' };
+  function translit(s) {
+    return String(s || '').toLowerCase().split('').map(function (ch) {
+      return TR.hasOwnProperty(ch) ? TR[ch] : ch;
+    }).join('')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  }
+  function words() {
+    var n = 0;
+    blocks.forEach(function (b) {
+      ['text', 'items', 'cite', 'cap'].forEach(function (k) {
+        if (b[k]) n += String(b[k]).trim().split(/\s+/).filter(Boolean).length;
+      });
+    });
+    n += (meta.title + ' ' + meta.desc).trim().split(/\s+/).filter(Boolean).length;
+    return n;
+  }
+  function autoMins() { return Math.max(1, Math.round(words() / 170)); }
+
+  /* ---------- block definitions ---------- */
+  var DEFS = {
+    h2:      { name: 'Заголовок',    make: function () { return { text: '' }; } },
+    h3:      { name: 'Подзаголовок', make: function () { return { text: '' }; } },
+    p:       { name: 'Текст',        make: function () { return { text: '' }; } },
+    list:    { name: 'Список',       make: function () { return { items: '', ordered: false }; } },
+    quote:   { name: 'Цитата',       make: function () { return { text: '', cite: '' }; } },
+    callout: { name: 'Врезка',       make: function () { return { text: '' }; } },
+    img:     { name: 'Изображение',  make: function () { return { src: '', alt: '', cap: '' }; } },
+    code:    { name: 'Код',          make: function () { return { text: '' }; } },
+    btn:     { name: 'Кнопка',       make: function () { return { text: 'Обсудить проект', href: '/#zayavka' }; } },
+    hr:      { name: 'Разделитель',  make: function () { return {}; } }
+  };
+
+  function blockHtml(b) {
+    switch (b.t) {
+      case 'h2': return '<h2>' + fmt(b.text) + '</h2>';
+      case 'h3': return '<h3>' + fmt(b.text) + '</h3>';
+      case 'p':  return '<p>' + fmt(b.text) + '</p>';
+      case 'list':
+        var lis = String(b.items || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
+          .map(function (s) { return '<li>' + fmt(s) + '</li>'; }).join('\n');
+        return (b.ordered ? '<ol>' : '<ul>') + '\n' + lis + '\n' + (b.ordered ? '</ol>' : '</ul>');
+      case 'quote':
+        return '<blockquote>' + fmt(b.text) + (b.cite ? '<cite>' + fmt(b.cite) + '</cite>' : '') + '</blockquote>';
+      case 'callout':
+        return '<div class="callout"><span class="ci">' + CALLOUT_ICON + '</span><p>' + fmt(b.text) + '</p></div>';
+      case 'img':
+        if (!b.src) return '';
+        return '<figure><img src="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
+          (b.cap ? '<figcaption>' + fmt(b.cap) + '</figcaption>' : '') + '</figure>';
+      case 'code': return '<pre>' + esc(b.text) + '</pre>';
+      case 'btn':  return '<p><a class="abtn" href="' + esc(b.href || '#') + '">' + esc(b.text || 'Кнопка') + '</a></p>';
+      case 'hr':   return '<hr>';
+    }
+    return '';
+  }
+  function bodyHtml() {
+    return blocks.map(blockHtml).filter(Boolean).join('\n');
+  }
+
+  /* ---------- editor rendering ---------- */
+  var blocksBox = document.getElementById('blocks');
+
+  function inputEl(ph, val, key, b, tag) {
+    var e = document.createElement(tag === 'ta' ? 'textarea' : 'input');
+    e.className = tag === 'ta' ? 'kta' : 'kin';
+    e.placeholder = ph;
+    e.value = val || '';
+    if (tag === 'ta') e.rows = 3;
+    e.addEventListener('input', function () { b[key] = e.value; refresh(); });
+    return e;
+  }
+
+  function renderBlocks() {
+    blocksBox.innerHTML = '';
+    blocks.forEach(function (b, idx) {
+      var card = document.createElement('div');
+      card.className = 'kb';
+      var top = document.createElement('div');
+      top.className = 'kb-top';
+      top.innerHTML = '<span class="kb-type">' + DEFS[b.t].name + '</span>';
+      [['↑', function () { if (idx > 0) { blocks.splice(idx - 1, 0, blocks.splice(idx, 1)[0]); renderBlocks(); refresh(); } }],
+       ['↓', function () { if (idx < blocks.length - 1) { blocks.splice(idx + 1, 0, blocks.splice(idx, 1)[0]); renderBlocks(); refresh(); } }],
+       ['✕', function () { blocks.splice(idx, 1); renderBlocks(); refresh(); }]
+      ].forEach(function (pair, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'kb-btn' + (i === 2 ? ' del' : '');
+        btn.textContent = pair[0];
+        btn.addEventListener('click', pair[1]);
+        top.appendChild(btn);
+      });
+      card.appendChild(top);
+
+      switch (b.t) {
+        case 'h2': case 'h3':
+          card.appendChild(inputEl('Текст заголовка', b.text, 'text', b)); break;
+        case 'p':
+          card.appendChild(inputEl('Абзац текста. **жирный**, [ссылка](https://…)', b.text, 'text', b, 'ta')); break;
+        case 'list':
+          var seg = document.createElement('div');
+          seg.className = 'kb-seg';
+          [['Маркированный', false], ['Нумерованный', true]].forEach(function (o) {
+            var sb = document.createElement('button');
+            sb.type = 'button';
+            sb.textContent = o[0];
+            if (b.ordered === o[1]) sb.className = 'on';
+            sb.addEventListener('click', function () { b.ordered = o[1]; renderBlocks(); refresh(); });
+            seg.appendChild(sb);
+          });
+          card.appendChild(seg);
+          card.appendChild(inputEl('Каждый пункт — с новой строки', b.items, 'items', b, 'ta'));
+          break;
+        case 'quote':
+          card.appendChild(inputEl('Текст цитаты', b.text, 'text', b, 'ta'));
+          card.appendChild(inputEl('Автор (необязательно)', b.cite, 'cite', b));
+          break;
+        case 'callout':
+          card.appendChild(inputEl('Текст совета или важного замечания', b.text, 'text', b, 'ta')); break;
+        case 'img':
+          card.appendChild(inputEl('URL изображения (https://…)', b.src, 'src', b));
+          card.appendChild(inputEl('Alt-текст для SEO', b.alt, 'alt', b));
+          card.appendChild(inputEl('Подпись (необязательно)', b.cap, 'cap', b));
+          break;
+        case 'code':
+          card.appendChild(inputEl('Код или конфиг', b.text, 'text', b, 'ta')); break;
+        case 'btn':
+          card.appendChild(inputEl('Текст кнопки', b.text, 'text', b));
+          card.appendChild(inputEl('Ссылка', b.href, 'href', b));
+          break;
+        case 'hr': break;
+      }
+      blocksBox.appendChild(card);
+    });
+  }
+
+  /* ---------- preview ---------- */
+  function refresh() {
+    if (!meta.slugTouched) meta.slug = translit(meta.title);
+    document.getElementById('mSlug').value = meta.slug;
+    document.getElementById('slugEcho').textContent = meta.slug || '…';
+    document.getElementById('prevUrl').textContent = 'noda-development.ru/blog/' + (meta.slug || '…') + '/';
+    document.getElementById('pvTitle').textContent = meta.title || 'Заголовок статьи';
+    document.getElementById('pvTag').textContent = meta.tag || 'Рубрика';
+    document.getElementById('pvTag2').textContent = meta.tag || 'Рубрика';
+    document.getElementById('pvDate').textContent = fdate(meta.date);
+    document.getElementById('pvMins').textContent = (meta.mins || autoMins()) + ' мин чтения';
+    document.getElementById('pvCover').style.background = 'var(--cg-' + meta.grad + ')';
+    document.getElementById('pvBody').innerHTML = bodyHtml() || '<p style="color:#62626f">Добавьте блоки слева — статья соберётся здесь в реальном времени.</p>';
+    save();
+  }
+
+  /* ---------- persistence ---------- */
+  function save() {
+    try { localStorage.setItem('noda_kon_draft', JSON.stringify({ meta: meta, blocks: blocks })); } catch (e) {}
+  }
+  function load() {
+    try {
+      var d = JSON.parse(localStorage.getItem('noda_kon_draft'));
+      if (d && d.meta) { meta = d.meta; blocks = d.blocks || []; }
+    } catch (e) {}
+  }
+
+  /* ---------- export ---------- */
+  function pageHtml() {
+    var slug = meta.slug || 'novaya-statya';
+    var title = esc(meta.title || 'Новая статья');
+    var desc = esc(meta.desc || '');
+    var tag = esc(meta.tag || 'Блог');
+    var mins = meta.mins || autoMins();
+    var body = bodyHtml().split('\n').map(function (l) { return l; }).join('\n');
+    return '<!DOCTYPE html>\n<html lang="ru">\n<head>\n' +
+      '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
+      '<title>' + title + ' · Блог NODA</title>\n' +
+      '<meta name="description" content="' + desc + '">\n' +
+      '<meta name="theme-color" content="#060608">\n' +
+      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n' +
+      '<link rel="canonical" href="https://noda-development.ru/blog/' + slug + '/">\n' +
+      '<meta property="og:title" content="' + title + '">\n' +
+      '<meta property="og:description" content="' + desc + '">\n' +
+      '<meta property="og:type" content="article">\n' +
+      '<link rel="preload" href="/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' +
+      '<link rel="preload" href="/fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' +
+      '<link rel="stylesheet" href="/blog/blog.css">\n' +
+      '<link rel="stylesheet" href="/custom/upgrade.css">\n' +
+      '<script src="/custom/upgrade.js" defer><\/script>\n' +
+      '<script type="application/ld+json">' + JSON.stringify({
+        '@context': 'https://schema.org', '@type': 'BlogPosting',
+        headline: meta.title || '', description: meta.desc || '',
+        datePublished: meta.date, inLanguage: 'ru-RU',
+        author: { '@type': 'Organization', name: 'NODA' },
+        publisher: { '@type': 'Organization', name: 'NODA' }
+      }) + '<\/script>\n</head>\n<body>\n' +
+      '<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>\n\n' +
+      '<header class="bnav">\n  <div class="bnav-in">\n    <a class="brand" href="/">' + BRAND('an1') + 'NODA</a>\n' +
+      '    <nav class="bnav-links">\n      <a href="/">Главная</a>\n      <a href="/uslugi/">Услуги</a>\n      <a href="/blog/" class="act">Блог</a>\n      <a href="/#contact">Контакты</a>\n    </nav>\n' +
+      '    <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>\n  </div>\n</header>\n\n' +
+      '<main class="wrap">\n  <section class="art-hero">\n' +
+      '    <nav class="crumbs">\n      <a href="/blog/">Блог</a>\n' +
+      '      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>\n' +
+      '      <span>' + tag + '</span>\n    </nav>\n' +
+      '    <h1>' + title + '</h1>\n' +
+      '    <div class="art-meta">\n      <span class="tag">' + tag + '</span>\n      <span>' + fdate(meta.date) + '</span><i></i>\n      <span>' + mins + ' мин чтения</span>\n    </div>\n' +
+      '    <div class="art-cover" aria-hidden="true">\n      <div class="bcover-art" style="background:var(--cg-' + meta.grad + ')"></div>\n      ' + NODES_SVG + '\n    </div>\n  </section>\n\n' +
+      '  <article class="art-body">\n' + body + '\n  </article>\n\n' +
+      '  <section class="art-cta">\n    <h2>Хотите так же — но в своём бизнесе?</h2>\n' +
+      '    <p>Расскажите о задаче: за один разговор предложим решение, сроки и смету. Бесплатно и без обязательств.</p>\n' +
+      '    <div class="abtn-row">\n      <a class="abtn" href="/#zayavka">Оставить заявку</a>\n' +
+      '      <a class="abtn ghost" href="https://t.me/noda_development" target="_blank" rel="noopener">Написать в Telegram</a>\n    </div>\n  </section>\n</main>\n\n' +
+      '<footer class="bfoot">\n  <div class="bfoot-in">\n    <a class="brand" href="/">' + BRAND('an2') + 'NODA</a>\n' +
+      '    <nav class="bfoot-links">\n      <a href="/uslugi/">Услуги</a>\n      <a href="/blog/">Блог</a>\n      <a href="/#zayavka">Заявка</a>\n' +
+      '      <a href="https://t.me/noda_development" target="_blank" rel="noopener">Telegram</a>\n' +
+      '      <a href="https://wa.me/79096860799" target="_blank" rel="noopener">WhatsApp</a>\n' +
+      '      <a href="tel:+79096860799">+7 (909) 686-07-99</a>\n    </nav>\n' +
+      '    <span class="cr">© 2026 NODA · Автоматизация и ИИ</span>\n  </div>\n</footer>\n</body>\n</html>\n';
+  }
+
+  function download(name, content, type) {
+    var blob = new Blob([content], { type: type || 'text/html;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+  }
+
+  document.getElementById('btnHtml').addEventListener('click', function () {
+    if (!meta.title) { alert('Добавьте заголовок статьи'); return; }
+    download('index.html', pageHtml());
+  });
+
+  document.getElementById('btnJs').addEventListener('click', function () {
+    if (!meta.title) { alert('Добавьте заголовок статьи'); return; }
+    var s = document.createElement('script');
+    s.src = '/blog/articles.js?v=' + Date.now();
+    s.onload = s.onerror = function () {
+      var list = (window.NODA_BLOG || []).filter(function (a) { return a.slug !== meta.slug; });
+      var entry = {
+        slug: meta.slug || 'novaya-statya',
+        title: meta.title,
+        desc: meta.desc,
+        tag: meta.tag || 'Блог',
+        date: meta.date,
+        mins: +(meta.mins || autoMins()),
+        grad: +meta.grad
+      };
+      list.unshift(entry);
+      var out = '/* NODA · Blog — список статей. Новые добавляйте в начало массива.\n' +
+        '   Проще всего — через конструктор: /blog/konstruktor/ */\n' +
+        'window.NODA_BLOG = ' + JSON.stringify(list, null, 2) + ';\n';
+      download('articles.js', out, 'text/javascript;charset=utf-8');
+    };
+    document.body.appendChild(s);
+  });
+
+  /* ---------- meta bindings ---------- */
+  function bindMeta(id, key, fn) {
+    var e = document.getElementById(id);
+    e.addEventListener('input', function () {
+      meta[key] = e.value;
+      if (fn) fn(e);
+      refresh();
+    });
+    return e;
+  }
+  bindMeta('mTitle', 'title');
+  bindMeta('mDesc', 'desc');
+  bindMeta('mTag', 'tag');
+  bindMeta('mDate', 'date');
+  bindMeta('mMins', 'mins');
+  document.getElementById('mSlug').addEventListener('input', function () {
+    meta.slugTouched = true;
+    meta.slug = translit(this.value) || this.value;
+    refresh();
+  });
+
+  /* gradient picker */
+  var gradsBox = document.getElementById('grads');
+  for (var i = 1; i <= 6; i++) {
+    (function (n) {
+      var g = document.createElement('button');
+      g.type = 'button';
+      g.className = 'kgrad' + (n === 1 ? ' on' : '');
+      g.style.background = 'var(--cg-' + n + ')';
+      g.setAttribute('aria-label', 'Обложка ' + n);
+      g.addEventListener('click', function () {
+        meta.grad = n;
+        gradsBox.querySelectorAll('.kgrad').forEach(function (x) { x.classList.remove('on'); });
+        g.classList.add('on');
+        refresh();
+      });
+      gradsBox.appendChild(g);
+    })(i);
+  }
+
+  /* palette */
+  document.getElementById('palette').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-t]');
+    if (!b) return;
+    var t = b.getAttribute('data-t');
+    var blk = DEFS[t].make();
+    blk.t = t;
+    blk.id = uid++;
+    blocks.push(blk);
+    renderBlocks();
+    refresh();
+    var last = blocksBox.lastElementChild;
+    if (last) {
+      last.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var f = last.querySelector('input,textarea');
+      if (f) f.focus();
+    }
+  });
+
+  /* clear / demo */
+  document.getElementById('btnClear').addEventListener('click', function () {
+    if (!confirm('Удалить черновик и начать заново?')) return;
+    meta = { title: '', desc: '', tag: '', date: today(), mins: '', slug: '', slugTouched: false, grad: 1 };
+    blocks = [];
+    syncMetaInputs();
+    renderBlocks();
+    refresh();
+  });
+
+  document.getElementById('btnDemo').addEventListener('click', function () {
+    meta = {
+      title: 'Пять процессов, которые стоит автоматизировать первыми',
+      desc: 'Короткий чек-лист: где автоматизация окупается быстрее всего и как не начать не с того.',
+      tag: 'Кейсы', date: today(), mins: '', slug: '', slugTouched: false, grad: 5
+    };
+    blocks = [
+      { t: 'p', id: uid++, text: 'Автоматизация даёт максимум эффекта там, где **много рутины и мало решений**. Вот с чего мы советуем начинать почти каждому клиенту.' },
+      { t: 'h2', id: uid++, text: 'С чего начать' },
+      { t: 'list', id: uid++, ordered: true, items: 'Приём и распределение заявок\nНапоминания клиентам\nОтчёты для руководителя\nОтветы на частые вопросы\nВыставление счетов' },
+      { t: 'callout', id: uid++, text: '**Правило:** сначала наводим порядок в процессе, потом автоматизируем. Автоматизированный хаос — это просто быстрый хаос.' },
+      { t: 'quote', id: uid++, text: 'Лучший процесс для старта — тот, за который вам уже сегодня больно.', cite: 'Команда NODA' },
+      { t: 'btn', id: uid++, text: 'Обсудить свой процесс', href: '/#zayavka' }
+    ];
+    syncMetaInputs();
+    renderBlocks();
+    refresh();
+  });
+
+  function syncMetaInputs() {
+    document.getElementById('mTitle').value = meta.title;
+    document.getElementById('mDesc').value = meta.desc;
+    document.getElementById('mTag').value = meta.tag;
+    document.getElementById('mDate').value = meta.date;
+    document.getElementById('mMins').value = meta.mins;
+    document.getElementById('mSlug').value = meta.slug;
+    document.querySelectorAll('.kgrad').forEach(function (g, i) {
+      g.classList.toggle('on', i + 1 === +meta.grad);
+    });
+  }
+
+  /* ---------- boot ---------- */
+  load();
+  syncMetaInputs();
+  renderBlocks();
+  refresh();
+})();
+</script>
+</body>
+</html>

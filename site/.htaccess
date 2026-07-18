@@ -1,0 +1,45 @@
+# Apache config for the static export (out/) on reg.ru shared hosting.
+
+# Single canonical origin: strip www, and upgrade http→https ONLY when the
+# request is proven to be plain http (X-Forwarded-Proto=http). reg.ru terminates
+# SSL at a proxy, so a naive "%{HTTPS} != on" redirect loops forever — this
+# positive-match version can never loop (on an https request the header is
+# "https", so the rule simply doesn't fire).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # www → non-www (host becomes non-www after, so it can't loop)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://noda-development.ru%{REQUEST_URI} [R=301,L]
+  # http → https, only when the proxy explicitly reports http
+  RewriteCond %{HTTP:X-Forwarded-Proto} =http [NC]
+  RewriteRule ^ https://noda-development.ru%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# OG/Twitter share images are generated without a file extension — force image/png
+# so Telegram/VK/Facebook recognise the preview.
+<FilesMatch "^opengraph-image$">
+  ForceType image/png
+</FilesMatch>
+
+# Correct types for a few extensionless/less-common assets.
+AddType application/manifest+json .webmanifest
+AddType image/svg+xml .svg
+AddType font/woff2 .woff2
+
+# Long-cache immutable build assets (hashed by Next).
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 7 days"
+  ExpiresByType image/svg+xml "access plus 7 days"
+</IfModule>
+
+# Gzip text assets if the module is available.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# Friendly 404 (Next exports out/404.html).
+ErrorDocument 404 /404.html
