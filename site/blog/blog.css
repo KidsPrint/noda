@@ -326,3 +326,7 @@ a{color:inherit}
 .art-views b{font-weight:600;color:#9a9aac}
 .bviews{display:inline-flex;align-items:center;gap:5px;color:#74748a;white-space:nowrap}
 .bviews svg{width:13px;height:13px}
+
+/* ---------- offset under the fixed site header (original .nav) ---------- */
+main.wrap, .kwrap { margin-top: 84px; }
+@media (min-width: 881px) { main.wrap, .kwrap { margin-top: 132px; } }
