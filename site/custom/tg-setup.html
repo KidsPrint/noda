@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Настройка доставки заявок · NODA</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#060608">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/blog/blog.css">
+<style>
+body{background:var(--bg)}
+.swrap{max-width:760px;margin:0 auto;padding:40px clamp(16px,4vw,28px) 90px}
+.swrap h1{font:600 clamp(24px,4vw,34px)/1.2 Unbounded,sans-serif;letter-spacing:-.01em;margin:18px 0 10px}
+.swrap h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slead{color:var(--muted);font-size:15px;line-height:1.65;margin-bottom:28px}
+.spanel{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:16px}
+.spanel h2{font:600 15px/1.3 Unbounded,sans-serif;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.spanel h2 .n{font-size:11px;color:#b9aefc;background:rgba(123,92,255,.12);border:1px solid rgba(123,92,255,.3);border-radius:8px;padding:5px 8px}
+.spanel p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:14px}
+.spanel p b{color:var(--ink)}
+.spanel code{font:600 12.5px/1 ui-monospace,Menlo,monospace;color:#9fd8ff;background:rgba(90,200,255,.08);border:1px solid rgba(90,200,255,.2);border-radius:6px;padding:2px 7px}
+.sin{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:var(--ink);font:500 14px/1.45 ui-monospace,Menlo,monospace;padding:12px 14px;outline:none;margin-bottom:12px}
+.sin:focus{border-color:rgba(139,124,255,.6);box-shadow:0 0 0 3px rgba(139,124,255,.14)}
+.sbtn{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;border-radius:999px;padding:13px 22px;font:700 14px/1 Inter,sans-serif;transition:transform .22s var(--ease),box-shadow .22s;margin-right:8px}
+.sbtn:active{transform:scale(.97)}
+.sbtn:disabled{opacity:.55;cursor:wait}
+.sbtn-p{color:#0c0c14;background:var(--grad);box-shadow:0 6px 22px rgba(123,92,255,.35)}
+.sbtn-p:hover{transform:translateY(-2px)}
+.sbtn-g{color:var(--ink);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14)}
+.sbtn-g:hover{border-color:rgba(255,255,255,.3)}
+.sstatus{margin-top:12px;font:600 13.5px/1.5 Inter,sans-serif;color:var(--cyan);min-height:20px}
+.sstatus.err{color:#ff8a8a}
+.schats{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.schat{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;cursor:pointer;transition:.2s;text-align:left;width:100%;color:var(--ink)}
+.schat:hover{border-color:rgba(139,124,255,.5)}
+.schat.on{border-color:rgba(139,124,255,.8);background:rgba(139,124,255,.1);box-shadow:0 0 0 3px rgba(139,124,255,.15)}
+.schat .av{flex:0 0 40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--grad);color:#0c0c14;font:700 15px/1 Unbounded,sans-serif}
+.schat b{display:block;font:600 14.5px/1.3 Inter,sans-serif}
+.schat span{color:#8a8a9c;font-size:12.5px}
+.schat .cid{margin-left:auto;font:600 13px/1 ui-monospace,Menlo,monospace;color:#9fd8ff}
+.sbig{font:600 26px/1 ui-monospace,Menlo,monospace;color:#9fd8ff;background:rgba(90,200,255,.07);border:1px dashed rgba(90,200,255,.35);border-radius:14px;padding:18px 22px;text-align:center;margin:14px 0;user-select:all}
+.shide{display:none}
+</style>
+</head>
+<body>
+<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
+<main class="swrap">
+  <a class="brand" href="/" style="margin-bottom:6px;display:inline-flex">
+    <svg viewBox="0 0 40 40" fill="none" style="width:30px;height:30px"><defs><linearGradient id="sg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#sg1)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
+    &nbsp;NODA
+  </a>
+  <h1>Настройка доставки <span class="accent">заявок</span></h1>
+  <p class="slead">Эта страница один раз связывает формы сайта с вашим Telegram-ботом: находит ваш <b style="color:var(--ink)">chat_id</b>, отправляет тест и собирает готовый файл настроек. Занимает две минуты.</p>
+
+  <section class="spanel">
+    <h2><span class="n">01</span>Бот</h2>
+    <input class="sin" id="tok" placeholder="Токен бота из @BotFather" autocomplete="off">
+    <button class="sbtn sbtn-g" id="bCheck" type="button">Проверить бота</button>
+    <div class="sstatus" id="stBot"></div>
+  </section>
+
+  <section class="spanel">
+    <h2><span class="n">02</span>Ваш чат</h2>
+    <p>Откройте своего бота в Telegram и отправьте ему <code>/start</code> (или любое сообщение). Потом нажмите кнопку — покажем все чаты, которые видит бот. Хотите получать заявки в группу — добавьте бота в группу и напишите в ней что-нибудь.</p>
+    <button class="sbtn sbtn-p" id="bFind" type="button">Найти мой chat_id</button>
+    <div class="sstatus" id="stFind"></div>
+    <div class="schats" id="chats"></div>
+  </section>
+
+  <section class="spanel shide" id="pTest">
+    <h2><span class="n">03</span>Проверка</h2>
+    <p>Выбран чат: <b id="selName"></b></p>
+    <div class="sbig" id="selId"></div>
+    <button class="sbtn sbtn-p" id="bTest" type="button">Отправить тестовую заявку</button>
+    <div class="sstatus" id="stTest"></div>
+  </section>
+
+  <section class="spanel shide" id="pDl">
+    <h2><span class="n">04</span>Включить на сайте</h2>
+    <p>Скачайте файл настроек и загрузите его на хостинг в папку <code>/custom/</code>, заменив существующий <code>lead-config.js</code>. С этого момента заявки будут приходить боту автоматически.</p>
+    <button class="sbtn sbtn-p" id="bDl" type="button">⬇ Скачать lead-config.js</button>
+    <div class="sstatus" id="stDl"></div>
+  </section>
+</main>
+
+<script src="/custom/lead-config.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var sel = null;
+
+  var pre = window.NX_LEAD_CONFIG || {};
+  if (pre.tgToken) $('tok').value = pre.tgToken;
+
+  function api(method, params) {
+    var t = $('tok').value.trim();
+    if (!t) return Promise.reject(new Error('Вставьте токен бота'));
+    return fetch('https://api.telegram.org/bot' + t + '/' + method, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params || {})
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.ok) throw new Error(j.description || 'Ошибка Telegram API');
+      return j.result;
+    });
+  }
+  function st(id, msg, err) {
+    var e = $(id);
+    e.textContent = msg;
+    e.classList.toggle('err', !!err);
+  }
+
+  $('bCheck').addEventListener('click', function () {
+    st('stBot', 'Проверяем…');
+    api('getMe').then(function (me) {
+      st('stBot', '✓ Бот на связи: ' + me.first_name + ' (@' + me.username + ')');
+    }, function (e) { st('stBot', '✕ ' + e.message, true); });
+  });
+
+  $('bFind').addEventListener('click', function () {
+    st('stFind', 'Ищем…');
+    $('chats').innerHTML = '';
+    api('getUpdates', { limit: 100 }).then(function (ups) {
+      var seen = {}, list = [];
+      ups.forEach(function (u) {
+        var m = u.message || u.edited_message || u.channel_post || (u.my_chat_member && { chat: u.my_chat_member.chat });
+        if (!m || !m.chat) return;
+        var c = m.chat;
+        if (seen[c.id]) return;
+        seen[c.id] = 1;
+        list.push(c);
+      });
+      if (!list.length) {
+        st('stFind', 'Чатов пока не видно. Напишите боту /start в Telegram и нажмите кнопку ещё раз.', true);
+        return;
+      }
+      st('stFind', 'Выберите чат, куда присылать заявки:');
+      list.forEach(function (c) {
+        var name = c.title || ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || ('чат ' + c.id);
+        var kind = c.type === 'private' ? 'личные сообщения' : (c.type === 'channel' ? 'канал' : 'группа');
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'schat';
+        b.innerHTML = '<span class="av">' + name.charAt(0).toUpperCase() + '</span><span><b></b><span>' + kind + (c.username ? ' · @' + c.username : '') + '</span></span><span class="cid">' + c.id + '</span>';
+        b.querySelector('b').textContent = name;
+        b.addEventListener('click', function () {
+          document.querySelectorAll('.schat').forEach(function (x) { x.classList.remove('on'); });
+          b.classList.add('on');
+          sel = { id: c.id, name: name };
+          $('selName').textContent = name;
+          $('selId').textContent = c.id;
+          $('pTest').classList.remove('shide');
+          $('pDl').classList.remove('shide');
+        });
+        $('chats').appendChild(b);
+      });
+    }, function (e) { st('stFind', '✕ ' + e.message, true); });
+  });
+
+  $('bTest').addEventListener('click', function () {
+    if (!sel) return;
+    st('stTest', 'Отправляем…');
+    api('sendMessage', {
+      chat_id: sel.id,
+      text: 'Тестовая заявка с сайта NODA ✓\nЕсли вы видите это сообщение — доставка заявок настроена правильно.'
+    }).then(function () {
+      st('stTest', '✓ Отправлено! Проверьте Telegram.');
+    }, function (e) { st('stTest', '✕ ' + e.message, true); });
+  });
+
+  $('bDl').addEventListener('click', function () {
+    if (!sel) return;
+    var out = '/* NODA · настройки доставки заявок (создано tg-setup.html).\n' +
+      '   Заявки с сайта приходят Telegram-боту в чат «' + sel.name + '».\n' +
+      '   Если токен утёк — отзовите его в @BotFather командой /revoke. */\n' +
+      'window.NX_LEAD_CONFIG = {\n' +
+      '  tgToken: ' + JSON.stringify($('tok').value.trim()) + ',\n' +
+      '  tgChatId: ' + JSON.stringify(String(sel.id)) + '\n' +
+      '};\n';
+    var blob = new Blob([out], { type: 'text/javascript;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'lead-config.js';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+    st('stDl', '✓ Файл скачан — загрузите его в /custom/ на хостинге.');
+  });
+})();
+</script>
+</body>
+</html>

@@ -31,6 +31,13 @@
     services: ['Telegram bot', 'AI integration', 'Website / web-app', 'CRM', 'Analytics', 'Not sure yet'],
     budgets: ['under 50k ₽', '50–150k ₽', '150–300k ₽', '300k+ ₽', 'need advice'],
     sendTg: 'Send via Telegram', sendWa: 'Send via WhatsApp',
+    sendMain: 'Send request', sending: 'Sending…',
+    orDirect: 'or message us directly:',
+    okAutoTitle: 'Request sent!',
+    okAutoText: 'It has already landed in our Telegram — we will reply within an hour during business hours.',
+    errAuto: 'Automatic sending failed — send it in one click via messenger:',
+    legacyOk: 'Request sent! We will reply within an hour.',
+    legacyErr: 'Sending failed — we opened our Telegram chat, the request text is copied.',
     consent: 'By sending the request you agree to the <a href="/en/politika-konfidencialnosti/">privacy policy</a>.',
     badge: '−30% off · until July 31',
     sideTitle: 'What happens next',
@@ -67,6 +74,13 @@
     services: ['Telegram-бот', 'Внедрение ИИ', 'Сайт / приложение', 'CRM', 'Аналитика', 'Пока не знаю'],
     budgets: ['до 50 тыс ₽', '50–150 тыс ₽', '150–300 тыс ₽', '300+ тыс ₽', 'нужен совет'],
     sendTg: 'Отправить в Telegram', sendWa: 'Отправить в WhatsApp',
+    sendMain: 'Отправить заявку', sending: 'Отправляем…',
+    orDirect: 'или напишите напрямую:',
+    okAutoTitle: 'Заявка отправлена!',
+    okAutoText: 'Мы уже получили её в Telegram и ответим в течение часа в рабочее время.',
+    errAuto: 'Не получилось отправить автоматически — отправьте в один клик через мессенджер:',
+    legacyOk: 'Заявка отправлена! Ответим в течение часа.',
+    legacyErr: 'Не получилось отправить — мы открыли наш Telegram, текст заявки скопирован.',
     consent: 'Нажимая кнопку, вы соглашаетесь с <a href="/politika-konfidencialnosti/">политикой конфиденциальности</a>.',
     badge: 'Скидка −30% · до 31 июля',
     sideTitle: 'Что будет дальше',
@@ -124,6 +138,24 @@
 
   function ymGoal(name) {
     try { if (typeof ym === 'function') ym(110366569, 'reachGoal', name); } catch (e) {}
+  }
+
+  /* ---------- automatic lead delivery via Telegram bot ---------- */
+  function leadCfg() {
+    var c = window.NX_LEAD_CONFIG || {};
+    return (c.tgToken && c.tgChatId) ? c : null;
+  }
+  function sendToBot(text) {
+    var c = leadCfg();
+    if (!c) return Promise.reject(new Error('no-config'));
+    return fetch('https://api.telegram.org/bot' + c.tgToken + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: c.tgChatId, text: text, disable_web_page_preview: true })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.ok) throw new Error('tg-api');
+      return true;
+    });
   }
 
   /* =====================================================
@@ -240,10 +272,17 @@
     form.appendChild(gMsg);
 
     var subRow = el('<div class="nx-submit-row"></div>');
+    var bSend = el('<button type="button" class="nx-btn nx-btn--primary">' + IC.send + T.sendMain + '</button>');
+    var direct = el('<span class="nx-direct">' + T.orDirect +
+      ' <a href="' + LINKS.tg + '" target="_blank" rel="noopener">Telegram</a><i>·</i><a href="' + LINKS.wa + '" target="_blank" rel="noopener">WhatsApp</a></span>');
+    subRow.appendChild(bSend); subRow.appendChild(direct);
+    form.appendChild(subRow);
+    /* fallback messenger buttons — shown only if the bot API call fails */
+    var fbRow = el('<div class="nx-fallback-row"></div>');
     var bTg = el('<button type="button" class="nx-btn nx-btn--primary">' + IC.send + T.sendTg + '</button>');
     var bWa = el('<button type="button" class="nx-btn nx-btn--ghost">' + IC.wa + T.sendWa + '</button>');
-    subRow.appendChild(bTg); subRow.appendChild(bWa);
-    form.appendChild(subRow);
+    fbRow.appendChild(bTg); fbRow.appendChild(bWa);
+    form.appendChild(fbRow);
     form.appendChild(el('<div class="nx-form-note" aria-live="polite"></div>'));
     form.appendChild(el('<p class="nx-consent">' + T.consent + '</p>'));
 
@@ -264,7 +303,8 @@
     /* --- success --- */
     var succ = sec.querySelector('.nx-success');
     succ.appendChild(el('<span class="nx-check">' + IC.check + '</span>'));
-    succ.appendChild(el('<h3>' + T.okTitle + '</h3>'));
+    var okH = el('<h3>' + T.okTitle + '</h3>');
+    succ.appendChild(okH);
     var okP = el('<p></p>');
     succ.appendChild(okP);
     var bAgain = el('<button type="button" class="nx-btn nx-btn--ghost">' + T.again + '</button>');
@@ -322,22 +362,50 @@
       return Promise.resolve(false);
     }
 
-    bTg.addEventListener('click', function () {
-      if (!validate()) return;
+    function sendViaTgManual() {
       var txt = compose();
       ymGoal('lead');
       copyText(txt).then(function (ok) {
+        okH.textContent = T.okTitle;
         okP.textContent = T.okTextTg;
         lead.classList.add('done');
         if (ok) toast(T.copied);
         window.open(LINKS.tg, '_blank', 'noopener');
       });
+    }
+
+    bSend.addEventListener('click', function () {
+      if (!validate()) return;
+      var note = form.querySelector('.nx-form-note');
+      if (!leadCfg()) { sendViaTgManual(); return; }
+      bSend.disabled = true;
+      note.classList.remove('err');
+      note.textContent = T.sending;
+      sendToBot(compose()).then(function () {
+        bSend.disabled = false;
+        note.textContent = '';
+        ymGoal('lead');
+        okH.textContent = T.okAutoTitle;
+        okP.textContent = T.okAutoText;
+        lead.classList.add('done');
+      }, function () {
+        bSend.disabled = false;
+        note.classList.add('err');
+        note.textContent = T.errAuto;
+        fbRow.classList.add('show');
+      });
+    });
+
+    bTg.addEventListener('click', function () {
+      if (!validate()) return;
+      sendViaTgManual();
     });
 
     bWa.addEventListener('click', function () {
       if (!validate()) return;
       var txt = compose();
       ymGoal('lead');
+      okH.textContent = T.okTitle;
       okP.textContent = T.okTextWa;
       lead.classList.add('done');
       window.open(LINKS.wa + '?text=' + encodeURIComponent(txt), '_blank', 'noopener');
@@ -484,6 +552,45 @@
   }
 
   /* =====================================================
+     4b. legacy "Обсудить проект" modal → same Telegram bot
+     ===================================================== */
+  var legacyHooked = false;
+  function hookLegacyLead() {
+    if (legacyHooked) return;
+    legacyHooked = true;
+    document.addEventListener('submit', function (e) {
+      var f = e.target;
+      if (!f || f.id !== 'leadForm' || !leadCfg()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var fd = new FormData(f);
+      var sum = document.getElementById('leadSum');
+      var L = [T.reqTitle];
+      if (fd.get('name')) L.push((EN ? 'Name: ' : 'Имя: ') + fd.get('name'));
+      if (fd.get('contact')) L.push((EN ? 'Contact: ' : 'Контакт: ') + fd.get('contact'));
+      if (fd.get('comment')) L.push(T.lTask + ': ' + fd.get('comment'));
+      if (sum && sum.textContent.trim() && sum.style.display !== 'none') L.push(sum.textContent.trim());
+      L.push(T.lPage + ': ' + location.origin + location.pathname);
+      var txt = L.join('\n');
+      var st = f.querySelector('#leadStatus') || f.querySelector('.lead-status');
+      if (st) { st.style.color = 'var(--cyan)'; st.textContent = T.sending; }
+      sendToBot(txt).then(function () {
+        ymGoal('lead');
+        if (st) { st.style.color = 'var(--cyan)'; st.textContent = T.legacyOk; }
+        f.reset();
+        setTimeout(function () {
+          var m = f.closest('.lead-modal');
+          if (m) m.classList.remove('on');
+        }, 1900);
+      }, function () {
+        if (st) { st.style.color = '#ff8a8a'; st.textContent = T.legacyErr; }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).catch(function () {});
+        window.open(LINKS.tg, '_blank', 'noopener');
+      });
+    }, true);
+  }
+
+  /* =====================================================
      5. remove legacy chat widget
      ===================================================== */
   function killLegacy() {
@@ -510,6 +617,13 @@
   }
 
   function boot() {
+    /* lead delivery config (token + chat id) */
+    if (!window.NX_LEAD_CONFIG) {
+      var cfg = document.createElement('script');
+      cfg.src = '/custom/lead-config.js';
+      document.head.appendChild(cfg);
+    }
+    hookLegacyLead();
     apply();
     /* re-apply if hydration re-renders parts of the page */
     var mo = new MutationObserver(function (muts) {
