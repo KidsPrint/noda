@@ -14,5 +14,5 @@
    ============================================================ */
 window.NX_LEAD_CONFIG = {
   tgToken: "8655944483:AAE-qOr_Cd67pBBtvA1F7t3uvjUXspS401A",
-  tgChatId: ""
+  tgChatId: "592763732"
 };
