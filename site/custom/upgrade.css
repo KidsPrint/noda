@@ -684,3 +684,12 @@
 
 /* hero: no "Листайте" hint */
 .hero .scroll-hint { display: none !important; }
+
+/* ============ MOBILE SECTION RHYTHM ============ */
+/* base .pad sections use 90px paddings — too airy on phones (180px between
+   sections); tighten to ~56px so the page flows without dead zones */
+@media (max-width: 880px) {
+  .pad { padding-top: clamp(44px, 12vw, 56px) !important; padding-bottom: clamp(44px, 12vw, 56px) !important; }
+  #blog-home.pad { padding-top: 16px !important; }
+  .nx-lead-sec.pad { padding-top: clamp(44px, 12vw, 56px) !important; }
+}

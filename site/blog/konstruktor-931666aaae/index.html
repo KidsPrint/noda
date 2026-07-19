@@ -141,6 +141,7 @@ body{background:var(--bg)}
 }
 .ksteps li{margin-bottom:10px;margin-left:18px}
 </style>
+<script src="/custom/gate.js"></script>
 </head>
 <body>
 <div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -657,7 +658,7 @@ body{background:var(--bg)}
       if (meta.cover) entry.cover = meta.cover;
       list.unshift(entry);
       var out = '/* NODA · Blog — список статей. Новые добавляйте в начало массива.\n' +
-        '   Проще всего — через конструктор: /blog/konstruktor/ */\n' +
+        '   Проще всего — через конструктор (адрес — в закладках владельца сайта). */\n' +
         'window.NODA_BLOG = ' + JSON.stringify(list, null, 2) + ';\n';
       download('articles.js', out, 'text/javascript;charset=utf-8');
     };

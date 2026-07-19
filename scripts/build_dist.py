@@ -16,6 +16,7 @@ ESBUILD_TARGETS = [
     'custom/upgrade.js',
     'custom/upgrade.css',
     'custom/lead-config.js',
+    'custom/gate.js',
     'blog/blog.css',
     'blog/articles.js',
     'blog/views.js',

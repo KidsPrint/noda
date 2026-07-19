@@ -1,7 +1,5 @@
 User-Agent: *
 Allow: /
-Disallow: /blog/konstruktor/
-Disallow: /custom/tg-setup.html
 
 Host: https://noda-development.ru
 Sitemap: https://noda-development.ru/sitemap.xml
