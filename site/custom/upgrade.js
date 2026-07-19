@@ -33,13 +33,11 @@
     sendMain: 'Send request', sending: 'Sending…',
     orDirect: 'or message us directly:',
     okAutoTitle: 'Request sent!',
-    okAutoText: 'It has already landed in our Telegram — we will reply within an hour during business hours.',
-    errAuto: 'Automatic sending failed — email the request instead:',
-    sendMail: 'Send by email',
-    okTextMail: 'We opened an email draft with your request — just press "Send". If it did not open, the request text is copied: paste it into an email to noda_development@mail.ru.',
+    okAutoText: 'It has already reached us — we will reply within an hour during business hours.',
+    errAuto: 'Sending failed — please check your connection and try again, or message us via the links below.',
     mailSubject: 'Website request — NODA',
     legacyOk: 'Request sent! We will reply within an hour.',
-    legacyErr: 'Sending failed — we opened an email draft with your request for noda_development@mail.ru (the text is also copied).',
+    legacyErr: 'Sending failed — please email us at noda_development@mail.ru (the request text is copied).',
     consent: 'By sending the request you agree to the <a href="/en/politika-konfidencialnosti/">privacy policy</a>.',
     badge: '−30% off · until July 31',
     sideTitle: 'What happens next',
@@ -76,13 +74,11 @@
     sendMain: 'Отправить заявку', sending: 'Отправляем…',
     orDirect: 'или напишите напрямую:',
     okAutoTitle: 'Заявка отправлена!',
-    okAutoText: 'Мы уже получили её в Telegram и ответим в течение часа в рабочее время.',
-    errAuto: 'Не получилось отправить автоматически — отправьте заявку на нашу почту:',
-    sendMail: 'Отправить на почту',
-    okTextMail: 'Мы открыли письмо с вашей заявкой — остаётся нажать «Отправить». Если письмо не открылось — текст заявки скопирован: вставьте его в письмо на noda_development@mail.ru.',
+    okAutoText: 'Мы уже получили её и ответим в течение часа в рабочее время.',
+    errAuto: 'Не получилось отправить — проверьте интернет и попробуйте ещё раз, или напишите нам по ссылкам ниже.',
     mailSubject: 'Заявка с сайта NODA',
     legacyOk: 'Заявка отправлена! Ответим в течение часа.',
-    legacyErr: 'Не получилось отправить автоматически — мы открыли письмо с заявкой на noda_development@mail.ru (текст также скопирован).',
+    legacyErr: 'Не получилось отправить — напишите нам на noda_development@mail.ru (текст заявки скопирован).',
     consent: 'Нажимая кнопку, вы соглашаетесь с <a href="/politika-konfidencialnosti/">политикой конфиденциальности</a>.',
     badge: 'Скидка −30% · до 31 июля',
     sideTitle: 'Что будет дальше',
@@ -156,6 +152,23 @@
       if (!j || !j.ok) throw new Error('tg-api');
       return true;
     });
+  }
+  /* silent email backup (FormSubmit) — fires automatically when the bot is unreachable */
+  var MAIL_TO = 'noda_development@mail.ru';
+  function sendToMail(text) {
+    return fetch('https://formsubmit.co/ajax/' + MAIL_TO, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ message: text, _subject: T.mailSubject, _template: 'box', _captcha: 'false' })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || String(j.success) !== 'true') throw new Error('mail-api');
+      return true;
+    });
+  }
+  /* delivery chain: Telegram bot → email; rejects only if both fail */
+  function deliverLead(text) {
+    if (!leadCfg()) return sendToMail(text);
+    return sendToBot(text).catch(function () { return sendToMail(text); });
   }
 
   /* =====================================================
@@ -272,16 +285,11 @@
     form.appendChild(gMsg);
 
     var subRow = el('<div class="nx-submit-row"></div>');
-    var bSend = el('<button type="button" class="nx-btn nx-btn--primary">' + IC.send + T.sendMain + '</button>');
+    var bSend = el('<button type="button" class="nx-btn nx-btn--primary">' + T.sendMain + '</button>');
     var direct = el('<span class="nx-direct">' + T.orDirect +
-      ' <a href="' + LINKS.tg + '" target="_blank" rel="noopener">Telegram</a><i>·</i><a href="' + LINKS.wa + '" target="_blank" rel="noopener">WhatsApp</a></span>');
+      ' <a href="' + LINKS.tg + '" target="_blank" rel="noopener">Telegram</a><i>·</i><a href="' + LINKS.wa + '" target="_blank" rel="noopener">WhatsApp</a><i>·</i><a href="' + LINKS.mail + '">' + T.socMail + '</a></span>');
     subRow.appendChild(bSend); subRow.appendChild(direct);
     form.appendChild(subRow);
-    /* fallback email button — shown only if the bot API call fails */
-    var fbRow = el('<div class="nx-fallback-row"></div>');
-    var bMail = el('<button type="button" class="nx-btn nx-btn--primary">' + IC.mail.replace('stroke="#ff5ca8"', 'stroke="currentColor"') + T.sendMail + '</button>');
-    fbRow.appendChild(bMail);
-    form.appendChild(fbRow);
     form.appendChild(el('<div class="nx-form-note" aria-live="polite"></div>'));
     form.appendChild(el('<p class="nx-consent">' + T.consent + '</p>'));
 
@@ -361,26 +369,13 @@
       return Promise.resolve(false);
     }
 
-    function sendViaMail() {
-      var txt = compose();
-      ymGoal('lead');
-      copyText(txt).then(function (ok) {
-        okH.textContent = T.okTitle;
-        okP.textContent = T.okTextMail;
-        lead.classList.add('done');
-        if (ok) toast(T.copied);
-        location.href = LINKS.mail + '?subject=' + encodeURIComponent(T.mailSubject) + '&body=' + encodeURIComponent(txt);
-      });
-    }
-
     bSend.addEventListener('click', function () {
       if (!validate()) return;
       var note = form.querySelector('.nx-form-note');
-      if (!leadCfg()) { sendViaMail(); return; }
       bSend.disabled = true;
       note.classList.remove('err');
       note.textContent = T.sending;
-      sendToBot(compose()).then(function () {
+      deliverLead(compose()).then(function () {
         bSend.disabled = false;
         note.textContent = '';
         ymGoal('lead');
@@ -391,13 +386,7 @@
         bSend.disabled = false;
         note.classList.add('err');
         note.textContent = T.errAuto;
-        fbRow.classList.add('show');
       });
-    });
-
-    bMail.addEventListener('click', function () {
-      if (!validate()) return;
-      sendViaMail();
     });
 
     renderPreview();
@@ -549,7 +538,7 @@
     legacyHooked = true;
     document.addEventListener('submit', function (e) {
       var f = e.target;
-      if (!f || f.id !== 'leadForm' || !leadCfg()) return;
+      if (!f || f.id !== 'leadForm') return;
       e.preventDefault();
       e.stopPropagation();
       var fd = new FormData(f);
@@ -563,7 +552,7 @@
       var txt = L.join('\n');
       var st = f.querySelector('#leadStatus') || f.querySelector('.lead-status');
       if (st) { st.style.color = 'var(--cyan)'; st.textContent = T.sending; }
-      sendToBot(txt).then(function () {
+      deliverLead(txt).then(function () {
         ymGoal('lead');
         if (st) { st.style.color = 'var(--cyan)'; st.textContent = T.legacyOk; }
         f.reset();
@@ -574,7 +563,6 @@
       }, function () {
         if (st) { st.style.color = '#ff8a8a'; st.textContent = T.legacyErr; }
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).catch(function () {});
-        location.href = LINKS.mail + '?subject=' + encodeURIComponent(T.mailSubject) + '&body=' + encodeURIComponent(txt);
       });
     }, true);
   }

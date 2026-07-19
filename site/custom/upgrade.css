@@ -247,9 +247,6 @@
 .nx-direct a { color: #9a9aac; font-weight: 600; text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,.25); padding-bottom: 1px; transition: color .2s, border-color .2s; }
 .nx-direct a:hover { color: #ececf1; border-color: rgba(139,124,255,.6); }
 
-.nx-fallback-row { display: none; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
-.nx-fallback-row.show { display: flex; animation: nx-tagin .3s cubic-bezier(.2,.9,.3,1.3); }
-
 .nx-btn:disabled { opacity: .6; cursor: wait; transform: none !important; }
 
 .nx-consent { font-size: 12.5px; color: #747482; margin-top: 14px; }
