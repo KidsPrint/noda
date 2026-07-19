@@ -501,7 +501,36 @@
   }
 
   /* =====================================================
-     3b. cases slider on mobile: hint + working counter
+     3b. themed artwork inside the case panels
+     ===================================================== */
+  function decorateCases() {
+    var track = document.getElementById('htrack');
+    if (!track || track.querySelector('.nx-case-art')) return;
+    var panels = track.querySelectorAll('.h-panel');
+    for (var i = 0; i < panels.length && i < 5; i++) {
+      panels[i].insertBefore(el('<span class="nx-case-art nx-ca-' + (i + 1) + '" aria-hidden="true"></span>'), panels[i].firstChild);
+    }
+  }
+
+  /* =====================================================
+     3c. language pill: any tap toggles the language
+     ===================================================== */
+  var langHooked = false;
+  function hookLangSwitch() {
+    if (langHooked) return;
+    langHooked = true;
+    document.addEventListener('click', function (e) {
+      var sw = e.target.closest && e.target.closest('.lang-switch');
+      if (!sw) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var other = sw.querySelector('a:not(.on)');
+      if (other) location.href = other.getAttribute('href');
+    }, true);
+  }
+
+  /* =====================================================
+     3d. cases slider on mobile: hint + working counter
      ===================================================== */
   function fixCasesMobile() {
     var track = document.getElementById('htrack');
@@ -629,6 +658,8 @@
     buildBlogSection();
     buildFab();
     hookAddons();
+    decorateCases();
+    hookLangSwitch();
     fixCasesMobile();
     fixLinks();
   }

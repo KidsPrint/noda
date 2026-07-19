@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/>
+    </linearGradient>
+  </defs>
+  <!-- phone chat panel -->
+  <rect x="96" y="40" width="290" height="480" rx="28" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.14)" stroke-width="1.5"/>
+  <!-- header -->
+  <circle cx="140" cy="84" r="16" fill="url(#g)"/>
+  <path d="M133 84l5 4 9-9" stroke="#0a0a12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="166" y="72" width="96" height="9" rx="4.5" fill="rgba(255,255,255,.3)"/>
+  <rect x="166" y="88" width="58" height="7" rx="3.5" fill="#3be0e0" opacity=".65"/>
+  <line x1="112" y1="116" x2="370" y2="116" stroke="rgba(255,255,255,.08)"/>
+  <!-- incoming bubble -->
+  <rect x="118" y="140" width="164" height="58" rx="14" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="134" y="156" width="120" height="8" rx="4" fill="rgba(255,255,255,.25)"/>
+  <rect x="134" y="172" width="86" height="8" rx="4" fill="rgba(255,255,255,.16)"/>
+  <!-- outgoing gradient bubble -->
+  <rect x="176" y="216" width="188" height="46" rx="14" fill="url(#g)" opacity=".85"/>
+  <rect x="194" y="232" width="130" height="9" rx="4.5" fill="rgba(10,10,18,.55)"/>
+  <!-- quick replies -->
+  <rect x="118" y="282" width="86" height="30" rx="15" fill="none" stroke="#8b7cff" stroke-width="1.5" opacity=".8"/>
+  <rect x="132" y="294" width="58" height="7" rx="3.5" fill="#8b7cff" opacity=".8"/>
+  <rect x="214" y="282" width="86" height="30" rx="15" fill="none" stroke="#5ac8ff" stroke-width="1.5" opacity=".8"/>
+  <rect x="228" y="294" width="58" height="7" rx="3.5" fill="#5ac8ff" opacity=".8"/>
+  <!-- payment bubble -->
+  <rect x="118" y="336" width="200" height="72" rx="14" fill="rgba(59,224,224,.07)" stroke="rgba(59,224,224,.4)" stroke-width="1.5"/>
+  <rect x="136" y="352" width="44" height="30" rx="6" fill="none" stroke="#3be0e0" stroke-width="1.6"/>
+  <line x1="136" y1="362" x2="180" y2="362" stroke="#3be0e0" stroke-width="1.6"/>
+  <rect x="192" y="352" width="100" height="8" rx="4" fill="rgba(255,255,255,.28)"/>
+  <rect x="192" y="368" width="66" height="8" rx="4" fill="#3be0e0" opacity=".7"/>
+  <path d="M282 390l6 6 12-12" stroke="#3be0e0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- typing indicator -->
+  <rect x="118" y="432" width="74" height="32" rx="16" fill="rgba(255,255,255,.06)"/>
+  <circle cx="140" cy="448" r="3.5" fill="rgba(255,255,255,.5)"/>
+  <circle cx="154" cy="448" r="3.5" fill="rgba(255,255,255,.35)"/>
+  <circle cx="168" cy="448" r="3.5" fill="rgba(255,255,255,.2)"/>
+  <!-- input -->
+  <rect x="112" y="482" width="220" height="26" rx="13" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+  <circle cx="356" cy="495" r="15" fill="url(#g)"/>
+  <path d="M350 495h11m-4-4 5 4-5 4" stroke="#0a0a12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

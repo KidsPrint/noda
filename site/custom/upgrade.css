@@ -641,3 +641,43 @@
   .horizontal { padding-bottom: 26px !important; }
   .statement { padding: 54px 0 !important; }
 }
+
+/* ============ CASE PANELS · themed artwork ============ */
+.h-panel .num,
+.h-panel > div { position: relative; z-index: 2; }
+.nx-case-art {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: right -20px center;
+  background-size: auto 96%;
+  opacity: .9;
+}
+/* left side fades to the panel background so only part of the art shows */
+.nx-case-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(9,9,15,.97) 26%, rgba(9,9,15,.82) 46%, rgba(9,9,15,.35) 68%, rgba(9,9,15,.05) 88%),
+    linear-gradient(0deg, rgba(9,9,15,.55) 0%, transparent 30%);
+}
+.nx-ca-1 { background-image: url(/custom/cases/case-1.svg); }
+.nx-ca-2 { background-image: url(/custom/cases/case-2.svg); }
+.nx-ca-3 { background-image: url(/custom/cases/case-3.svg); }
+.nx-ca-4 { background-image: url(/custom/cases/case-4.svg); }
+.nx-ca-5 { background-image: url(/custom/cases/case-5.svg); }
+@media (max-width: 880px) {
+  .nx-case-art { background-position: right -30px center; background-size: auto 88%; opacity: .75; }
+  .nx-case-art::after {
+    background:
+      linear-gradient(90deg, rgba(9,9,15,.97) 30%, rgba(9,9,15,.85) 52%, rgba(9,9,15,.4) 72%, rgba(9,9,15,.08) 92%),
+      linear-gradient(0deg, rgba(9,9,15,.6) 0%, transparent 34%);
+  }
+}
+
+/* ============ LANGUAGE PILL · whole pill is tappable ============ */
+.lang-switch { cursor: pointer; }
+.lang-switch a { padding: 6px 4px; }

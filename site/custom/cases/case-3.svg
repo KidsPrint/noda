@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/>
+    </linearGradient>
+  </defs>
+  <!-- board frame -->
+  <rect x="76" y="56" width="316" height="448" rx="22" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>
+  <rect x="96" y="80" width="120" height="10" rx="5" fill="rgba(255,255,255,.3)"/>
+  <circle cx="356" cy="85" r="4" fill="#8b7cff"/><circle cx="370" cy="85" r="4" fill="#5ac8ff"/>
+  <!-- column 1 -->
+  <rect x="96" y="112" width="88" height="9" rx="4.5" fill="#8b7cff" opacity=".8"/>
+  <rect x="96" y="134" width="88" height="64" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="106" y="146" width="62" height="7" rx="3.5" fill="rgba(255,255,255,.3)"/>
+  <rect x="106" y="160" width="44" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+  <circle cx="112" cy="184" r="6" fill="rgba(139,124,255,.5)"/>
+  <rect x="96" y="210" width="88" height="64" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="106" y="222" width="56" height="7" rx="3.5" fill="rgba(255,255,255,.3)"/>
+  <rect x="106" y="236" width="40" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+  <circle cx="112" cy="260" r="6" fill="rgba(139,124,255,.5)"/>
+  <!-- column 2 -->
+  <rect x="200" y="112" width="88" height="9" rx="4.5" fill="#5ac8ff" opacity=".8"/>
+  <rect x="200" y="134" width="88" height="64" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="210" y="146" width="60" height="7" rx="3.5" fill="rgba(255,255,255,.3)"/>
+  <rect x="210" y="160" width="46" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+  <circle cx="216" cy="184" r="6" fill="rgba(90,200,255,.5)"/>
+  <!-- active card -->
+  <rect x="200" y="210" width="88" height="72" rx="10" fill="rgba(90,200,255,.08)" stroke="url(#g)" stroke-width="1.6"/>
+  <rect x="210" y="222" width="64" height="7" rx="3.5" fill="rgba(255,255,255,.4)"/>
+  <rect x="210" y="236" width="48" height="6" rx="3" fill="rgba(255,255,255,.2)"/>
+  <rect x="210" y="256" width="42" height="14" rx="7" fill="url(#g)" opacity=".9"/>
+  <circle cx="276" cy="264" r="6" fill="rgba(255,121,192,.6)"/>
+  <!-- column 3 -->
+  <rect x="304" y="112" width="72" height="9" rx="4.5" fill="#ff79c0" opacity=".8"/>
+  <rect x="304" y="134" width="72" height="64" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="314" y="146" width="50" height="7" rx="3.5" fill="rgba(255,255,255,.3)"/>
+  <rect x="314" y="160" width="36" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+  <path d="M316 186l4 4 8-8" stroke="#3be0e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- flow arrow -->
+  <path d="M140 300c60 46 130 46 196 8" stroke="url(#g)" stroke-width="1.8" stroke-dasharray="5 6" fill="none"/>
+  <path d="M330 314l8-7-10-3" stroke="url(#g)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- funnel -->
+  <g stroke-width="1.7">
+    <path d="M120 356h120l-34 44v52l-22 14v-66l-34-44z" stroke="#8b7cff" fill="rgba(139,124,255,.08)"/>
+  </g>
+  <!-- phone + mail linked to funnel -->
+  <rect x="286" y="366" width="90" height="34" rx="17" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)"/>
+  <path d="M300 378h14m-14 6h22" stroke="rgba(255,255,255,.35)" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="358" cy="383" r="8" fill="none" stroke="#3be0e0" stroke-width="1.6"/>
+  <path d="M354.5 383l2.5 2.5 5-5" stroke="#3be0e0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="286" y="418" width="90" height="34" rx="17" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)"/>
+  <rect x="298" y="428" width="20" height="14" rx="3" stroke="#ff79c0" stroke-width="1.5" fill="none"/>
+  <path d="m298 430 10 7 10-7" stroke="#ff79c0" stroke-width="1.5" fill="none"/>
+  <rect x="328" y="431" width="38" height="8" rx="4" fill="rgba(255,255,255,.25)"/>
+</svg>
