@@ -681,3 +681,6 @@
 /* ============ LANGUAGE PILL · whole pill is tappable ============ */
 .lang-switch { cursor: pointer; }
 .lang-switch a { padding: 6px 4px; }
+
+/* hero: no "Листайте" hint */
+.hero .scroll-hint { display: none !important; }

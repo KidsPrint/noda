@@ -52,13 +52,21 @@ a{color:inherit}
 }
 .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font:700 17px/1 Unbounded,sans-serif;letter-spacing:.02em;color:var(--ink)}
 .brand svg{width:30px;height:30px}
-.bnav-links{display:flex;gap:4px;margin-left:auto}
+.bnav-links{display:flex;gap:4px;margin:0 auto}
 .bnav-links a{
   color:var(--muted);text-decoration:none;font:600 14px/1 Inter,sans-serif;
   padding:10px 15px;border-radius:999px;transition:.25s var(--ease);
 }
 .bnav-links a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
 .bnav-links a.act{color:var(--ink);background:rgba(139,124,255,.12)}
+.bnav-right{display:flex;align-items:center;gap:16px;margin-left:auto}
+.bnav-phone{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  color:var(--muted);font:600 14px/1 Inter,sans-serif;transition:color .2s;white-space:nowrap;
+}
+.bnav-phone:hover{color:var(--ink)}
+.bnav-phone svg{width:16px;height:16px}
+@media (max-width:1060px){.bnav-phone span{display:none}}
 .bnav-cta{
   display:inline-flex;align-items:center;text-decoration:none;
   font:700 14px/1 Inter,sans-serif;color:#0c0c14;
@@ -311,3 +319,10 @@ a{color:inherit}
 .bfoot .cr{color:#5c5c6c;font-size:13px}
 
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important;animation-duration:.01s!important}}
+
+/* ---------- view counters ---------- */
+.art-views{display:inline-flex;align-items:center;gap:7px;color:#74748a}
+.art-views svg{width:16px;height:16px}
+.art-views b{font-weight:600;color:#9a9aac}
+.bviews{display:inline-flex;align-items:center;gap:5px;color:#74748a;white-space:nowrap}
+.bviews svg{width:13px;height:13px}

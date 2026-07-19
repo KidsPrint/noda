@@ -147,16 +147,17 @@ body{background:var(--bg)}
 
 <header class="bnav">
   <div class="bnav-in">
-    <a class="brand" href="/">
-      <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="kg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#kg1)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
-      NODA
-    </a>
+    <a class="brand" href="/"><svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="hnv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#hnv)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>NODA</a>
     <nav class="bnav-links">
       <a href="/">Главная</a>
       <a href="/uslugi/">Услуги</a>
       <a href="/blog/" class="act">Блог</a>
+      <a href="/#contact">Контакты</a>
     </nav>
-    <a class="bnav-cta" href="/blog/">← К блогу</a>
+    <div class="bnav-right">
+      <a class="bnav-phone" href="tel:+79096860799" aria-label="Позвонить +7 (909) 686-07-99"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h3l2 5-2.4 1.5a12 12 0 0 0 4.9 4.9L17 15l5 2v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3z"/></svg><span>+7 (909) 686-07-99</span></a>
+      <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>
+    </div>
   </div>
 </header>
 
@@ -596,19 +597,23 @@ body{background:var(--bg)}
       '<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>\n\n' +
       '<header class="bnav">\n  <div class="bnav-in">\n    <a class="brand" href="/">' + BRAND('an1') + 'NODA</a>\n' +
       '    <nav class="bnav-links">\n      <a href="/">Главная</a>\n      <a href="/uslugi/">Услуги</a>\n      <a href="/blog/" class="act">Блог</a>\n      <a href="/#contact">Контакты</a>\n    </nav>\n' +
-      '    <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>\n  </div>\n</header>\n\n' +
+      '    <div class="bnav-right">\n' +
+      '      <a class="bnav-phone" href="tel:+79096860799" aria-label="Позвонить +7 (909) 686-07-99"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h3l2 5-2.4 1.5a12 12 0 0 0 4.9 4.9L17 15l5 2v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3z"/></svg><span>+7 (909) 686-07-99</span></a>\n' +
+      '      <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>\n    </div>\n  </div>\n</header>\n\n' +
       '<main class="wrap">\n  <section class="art-hero">\n' +
       '    <nav class="crumbs">\n      <a href="/blog/">Блог</a>\n' +
       '      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>\n' +
       '      <span>' + tag + '</span>\n    </nav>\n' +
       '    <h1>' + title + '</h1>\n' +
-      '    <div class="art-meta">\n      <span class="tag">' + tag + '</span>\n      <span>' + fdate(meta.date) + '</span><i></i>\n      <span>' + mins + ' мин чтения</span>\n    </div>\n' +
+      '    <div class="art-meta">\n      <span class="tag">' + tag + '</span>\n      <span>' + fdate(meta.date) + '</span><i></i>\n      <span>' + mins + ' мин чтения</span><i></i>\n' +
+      '      <span class="art-views" id="artViews" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg><b></b></span>\n    </div>\n' +
       '    <div class="art-cover" aria-hidden="true">\n      ' + coverArt + coverNodes + '\n    </div>\n  </section>\n\n' +
       '  <article class="art-body">\n' + body + '\n  </article>\n\n' +
       '  <section class="art-cta">\n    <h2>Хотите так же — но в своём бизнесе?</h2>\n' +
       '    <p>Расскажите о задаче: за один разговор предложим решение, сроки и смету. Бесплатно и без обязательств.</p>\n' +
       '    <div class="abtn-row">\n      <a class="abtn" href="/#zayavka">Оставить заявку</a>\n' +
       '      <a class="abtn ghost" href="https://t.me/noda_development" target="_blank" rel="noopener">Написать в Telegram</a>\n    </div>\n  </section>\n</main>\n\n' +
+      '<script src="/blog/views.js"><\/script>\n<script>NodaViews.hit(' + JSON.stringify(slug) + ', document.getElementById("artViews"));<\/script>\n' +
       '<footer class="bfoot">\n  <div class="bfoot-in">\n    <a class="brand" href="/">' + BRAND('an2') + 'NODA</a>\n' +
       '    <nav class="bfoot-links">\n      <a href="/uslugi/">Услуги</a>\n      <a href="/blog/">Блог</a>\n      <a href="/#zayavka">Заявка</a>\n' +
       '      <a href="https://t.me/noda_development" target="_blank" rel="noopener">Telegram</a>\n' +

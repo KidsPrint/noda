@@ -22,17 +22,17 @@
 
 <header class="bnav">
   <div class="bnav-in">
-    <a class="brand" href="/">
-      <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#bg1)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>
-      NODA
-    </a>
+    <a class="brand" href="/"><svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="hnv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#hnv)"/><g stroke="#0a0a12" stroke-width="2.6" stroke-linecap="round" fill="none"><line x1="14" y1="27" x2="14" y2="16"/><line x1="26" y1="24" x2="26" y2="13"/><line x1="14" y1="16" x2="26" y2="24"/></g><circle cx="14" cy="13" r="3" fill="#0a0a12"/><circle cx="26" cy="13" r="3" fill="#0a0a12"/><circle cx="14" cy="27" r="3" fill="#0a0a12"/><circle cx="26" cy="27" r="3" fill="#0a0a12"/></svg>NODA</a>
     <nav class="bnav-links">
       <a href="/">Главная</a>
       <a href="/uslugi/">Услуги</a>
       <a href="/blog/" class="act">Блог</a>
       <a href="/#contact">Контакты</a>
     </nav>
-    <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>
+    <div class="bnav-right">
+      <a class="bnav-phone" href="tel:+79096860799" aria-label="Позвонить +7 (909) 686-07-99"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h3l2 5-2.4 1.5a12 12 0 0 0 4.9 4.9L17 15l5 2v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3z"/></svg><span>+7 (909) 686-07-99</span></a>
+      <a class="bnav-cta" href="/#zayavka">Обсудить проект</a>
+    </div>
   </div>
 </header>
 
@@ -66,6 +66,7 @@
 </footer>
 
 <script src="/blog/articles.js"></script>
+<script src="/blog/views.js"></script>
 <script>
 (function () {
   var MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
@@ -123,6 +124,32 @@
       render();
     });
   }
+
+  /* views on cards (read-only; hidden if the counter service is unreachable) */
+  var EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>';
+  var viewsCache = {};
+  function fillViews() {
+    if (!window.NodaViews) return;
+    list.forEach(function (a) {
+      var apply = function (v) {
+        if (v == null) return;
+        document.querySelectorAll('.bcard[href="/blog/' + a.slug + '/"] .bmeta').forEach(function (m) {
+          if (m.querySelector('.bviews')) return;
+          var s = document.createElement('span');
+          s.className = 'bviews';
+          s.innerHTML = EYE + ' ' + NodaViews.fmt(v);
+          var i = document.createElement('i');
+          m.appendChild(i);
+          m.appendChild(s);
+        });
+      };
+      if (a.slug in viewsCache) { apply(viewsCache[a.slug]); return; }
+      NodaViews.get(a.slug).then(function (v) { viewsCache[a.slug] = v; apply(v); });
+    });
+  }
+
+  var origRender = render;
+  render = function () { origRender(); fillViews(); };
 
   renderTags();
   render();
