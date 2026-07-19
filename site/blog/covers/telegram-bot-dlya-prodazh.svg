@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7cff"/><stop offset=".5" stop-color="#5ac8ff"/><stop offset="1" stop-color="#ff79c0"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#5ac8ff" stop-opacity=".24"/><stop offset="1" stop-color="#5ac8ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ff79c0" stop-opacity=".16"/><stop offset="1" stop-color="#ff79c0" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.5" fill="rgba(255,255,255,.07)"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#0a0a12"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <ellipse cx="430" cy="180" rx="460" ry="320" fill="url(#glow1)"/>
+  <ellipse cx="960" cy="470" rx="380" ry="300" fill="url(#glow2)"/>
+
+  <!-- big paper plane -->
+  <g stroke="url(#g)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M150 240 460 150l-96 150-60-38-64 66 6-88z" fill="rgba(139,124,255,.08)"/>
+    <path d="M364 300 460 150" fill="none"/>
+  </g>
+  <path d="M480 140c60-28 150-40 220-30" stroke="rgba(255,255,255,.14)" stroke-width="2" stroke-dasharray="3 10" stroke-linecap="round"/>
+
+  <!-- chat window -->
+  <rect x="560" y="120" width="420" height="400" rx="26" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+  <circle cx="612" cy="172" r="20" fill="url(#g)"/>
+  <path d="M603 172l6 6 12-12" stroke="#0a0a12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="646" y="158" width="130" height="12" rx="6" fill="rgba(255,255,255,.3)"/>
+  <rect x="646" y="178" width="76" height="9" rx="4.5" fill="#3be0e0" opacity=".7"/>
+  <line x1="560" y1="212" x2="980" y2="212" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
+  <rect x="588" y="238" width="212" height="64" rx="16" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="608" y="256" width="150" height="10" rx="5" fill="rgba(255,255,255,.25)"/>
+  <rect x="608" y="274" width="104" height="10" rx="5" fill="rgba(255,255,255,.15)"/>
+  <rect x="700" y="322" width="252" height="56" rx="16" fill="url(#g)" opacity=".9"/>
+  <rect x="722" y="342" width="170" height="11" rx="5.5" fill="rgba(10,10,18,.55)"/>
+  <!-- payment success -->
+  <rect x="588" y="398" width="260" height="76" rx="16" fill="rgba(59,224,224,.07)" stroke="rgba(59,224,224,.45)" stroke-width="2"/>
+  <rect x="608" y="416" width="56" height="38" rx="8" fill="none" stroke="#3be0e0" stroke-width="2.2"/>
+  <line x1="608" y1="429" x2="664" y2="429" stroke="#3be0e0" stroke-width="2.2"/>
+  <rect x="678" y="418" width="120" height="10" rx="5" fill="rgba(255,255,255,.3)"/>
+  <rect x="678" y="436" width="84" height="10" rx="5" fill="#3be0e0" opacity=".7"/>
+  <path d="M808 446l8 8 16-16" stroke="#3be0e0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- floating: calendar -->
+  <rect x="1020" y="150" width="110" height="104" rx="16" fill="rgba(139,124,255,.08)" stroke="#8b7cff" stroke-width="2"/>
+  <line x1="1020" y1="184" x2="1130" y2="184" stroke="#8b7cff" stroke-width="2"/>
+  <line x1="1048" y1="136" x2="1048" y2="162" stroke="#8b7cff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="1102" y1="136" x2="1102" y2="162" stroke="#8b7cff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="1052" cy="212" r="5" fill="rgba(255,255,255,.3)"/><circle cx="1075" cy="212" r="5" fill="rgba(255,255,255,.3)"/>
+  <circle cx="1098" cy="212" r="6.5" fill="#ff79c0"/>
+  <!-- floating: cart -->
+  <g stroke="#ff79c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M204 470h20l18 84h96l16-60H236"/>
+    <circle cx="258" cy="580" r="9"/><circle cx="330" cy="580" r="9"/>
+  </g>
+  <!-- 24/7 badge -->
+  <rect x="380" y="430" width="120" height="46" rx="23" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.16)" stroke-width="1.6"/>
+  <text x="440" y="461" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="24" fill="url(#g)">24/7</text>
+</svg>

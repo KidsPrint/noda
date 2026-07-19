@@ -19,7 +19,8 @@ window.NODA_BLOG = [
     tag: "Внедрение ИИ",
     date: "2026-07-18",
     mins: 6,
-    grad: 2
+    grad: 2,
+    cover: "/blog/covers/ii-ili-obychnyj-soft.svg"
   },
   {
     slug: "kak-vnedrit-ii-v-biznes",
@@ -28,7 +29,8 @@ window.NODA_BLOG = [
     tag: "Внедрение ИИ",
     date: "2026-07-15",
     mins: 7,
-    grad: 1
+    grad: 1,
+    cover: "/blog/covers/kak-vnedrit-ii-v-biznes.svg"
   },
   {
     slug: "telegram-bot-dlya-prodazh",
@@ -37,7 +39,8 @@ window.NODA_BLOG = [
     tag: "Telegram-боты",
     date: "2026-07-08",
     mins: 6,
-    grad: 4
+    grad: 4,
+    cover: "/blog/covers/telegram-bot-dlya-prodazh.svg"
   },
   {
     slug: "crm-bez-haosa",
@@ -46,6 +49,7 @@ window.NODA_BLOG = [
     tag: "CRM",
     date: "2026-07-01",
     mins: 5,
-    grad: 3
+    grad: 3,
+    cover: "/blog/covers/crm-bez-haosa.svg"
   }
 ];
