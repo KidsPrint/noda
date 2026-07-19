@@ -22,6 +22,30 @@
   font-family: Inter, system-ui, sans-serif;
 }
 
+.nx-fab-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nx-fab-tag {
+  font: 600 13px/1 Inter, system-ui, sans-serif;
+  color: #ececf1;
+  background: rgba(14,14,22,.92);
+  border: 1px solid rgba(139,124,255,.35);
+  backdrop-filter: blur(12px);
+  padding: 9px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 4px 18px rgba(0,0,0,.4);
+  animation: nx-tagfloat 3.4s ease-in-out infinite;
+  transition: opacity .3s, transform .3s;
+}
+@keyframes nx-tagfloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.nx-fab-root.open .nx-fab-tag { opacity: 0; transform: translateX(8px); pointer-events: none; }
+
 .nx-fab {
   position: relative;
   width: 64px;
@@ -63,7 +87,14 @@
 .nx-fab-root.open .nx-fab::before,
 .nx-fab-root.open .nx-fab::after { animation-play-state: paused; opacity: 0; }
 
-.nx-fab svg { width: 26px; height: 26px; transition: transform .4s cubic-bezier(.2,.7,.15,1), opacity .25s; position: absolute; }
+.nx-fab svg {
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transition: transform .4s cubic-bezier(.2,.7,.15,1), opacity .25s;
+}
 .nx-fab .nx-ic-open  { opacity: 1; transform: rotate(0) scale(1); }
 .nx-fab .nx-ic-close { opacity: 0; transform: rotate(-90deg) scale(.4); }
 .nx-fab-root.open .nx-ic-open  { opacity: 0; transform: rotate(90deg) scale(.4); }
@@ -532,3 +563,87 @@
 .nxb-card:hover .nxb-more svg { transform: translateX(4px); }
 
 .nxb-all-row { display: flex; justify-content: center; margin-top: 30px; }
+
+/* ============ ADD-ONS: informational only ============ */
+.addon { cursor: default !important; }
+.addon .addon-price,
+.addon .addon-add { display: none !important; }
+
+/* ============ CASES SLIDER · mobile hint + counter ============ */
+.nx-chint { display: none; }
+@media (max-width: 880px) {
+  #cases .h-hint { display: none !important; }
+  .nx-chint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    width: fit-content;
+    margin: 2px auto 0;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(10,10,16,.55);
+    backdrop-filter: blur(12px);
+  }
+  .nx-chint-ic { position: relative; width: 22px; height: 10px; flex: 0 0 auto; }
+  .nx-chint-ic i {
+    position: absolute;
+    top: 1px;
+    width: 7px; height: 7px;
+    border-top: 1.6px solid #ececf1;
+    border-right: 1.6px solid #ececf1;
+    transform: rotate(45deg);
+    opacity: .22;
+    animation: nx-chev 1.5s cubic-bezier(.2,.7,.15,1) infinite;
+  }
+  .nx-chint-ic i:nth-child(1) { left: 0; }
+  .nx-chint-ic i:nth-child(2) { left: 7px; animation-delay: .16s; }
+  .nx-chint-ic i:nth-child(3) { left: 14px; animation-delay: .32s; }
+  @keyframes nx-chev { 0%,100% { opacity: .18; } 40% { opacity: .95; } }
+  .nx-chint-txt { font: 600 12.5px/1 Inter, sans-serif; color: #ececf1; white-space: nowrap; }
+  .nx-chint-bar {
+    position: relative;
+    width: 64px; height: 3px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.14);
+    overflow: hidden;
+  }
+  .nx-chint-bar b {
+    position: absolute; inset: 0;
+    transform-origin: left;
+    transform: scaleX(0);
+    background: linear-gradient(120deg, #8b7cff, #5ac8ff 45%, #ff79c0);
+    border-radius: 3px;
+  }
+  .nx-chint-count { font: 500 11px/1 Inter, sans-serif; color: #9a9aac; letter-spacing: .05em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .nx-chint-count em { font-style: normal; color: #ececf1; font-weight: 600; }
+}
+
+/* ============ COMPACT LEAD FORM ON PHONES ============ */
+@media (max-width: 560px) {
+  .nx-lead { gap: 12px; }
+  .nx-card { padding: 18px 16px; border-radius: 18px; }
+  .nx-f-group { margin-bottom: 13px; }
+  .nx-f-label { font-size: 10.5px; margin-bottom: 7px; }
+  .nx-input, .nx-textarea { padding: 11px 13px; font-size: 14px; border-radius: 12px; }
+  .nx-textarea { min-height: 74px; }
+  .nx-row2 { gap: 10px; }
+  .nx-chips { gap: 6px; }
+  .nx-chip { padding: 8px 12px; font-size: 12.5px; }
+  .nx-submit-row { margin-top: 18px; gap: 10px; }
+  .nx-btn { padding: 13px 22px; font-size: 14px; width: 100%; justify-content: center; }
+  .nx-direct { font-size: 12.5px; }
+  .nx-consent { font-size: 11.5px; margin-top: 10px; }
+  .nx-side-badge { margin-bottom: 16px; padding: 7px 12px; font-size: 11.5px; }
+  .nx-side-title { font-size: 17px; }
+  .nx-side-sub { font-size: 13.5px; margin-bottom: 16px; }
+  .nx-step { padding-bottom: 16px; gap: 12px; }
+  .nx-step-num { flex-basis: 30px; height: 30px; font-size: 11.5px; border-radius: 10px; }
+  .nx-step b { font-size: 13.5px; }
+  .nx-step span { font-size: 12px; }
+  .nx-side-preview { padding-top: 14px; }
+  .nx-success { min-height: 300px; padding: 28px 14px; }
+  .nx-check { width: 68px; height: 68px; margin-bottom: 18px; }
+  .nx-lead-sec .shead p { font-size: 14px; }
+}

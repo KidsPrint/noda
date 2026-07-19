@@ -56,7 +56,9 @@
     inReq: 'In request', addLbl: 'Add',
     socTg: 'Telegram', socWa: 'WhatsApp', socMax: 'MAX', socTel: 'Call us', socMail: 'Email',
     fabAria: 'Contact us',
-    addonsSub: 'Options most often taken with this service. Tap a module — we will add it to your request below.',
+    fabTag: 'Message us',
+    casesHint: 'Swipe to browse',
+    addonsSub: 'Options most often taken with this service. If something catches your eye — just mention it in your request and we will include it in the quote.',
     reqTitle: 'Website request · NODA',
     lService: 'Service', lBudget: 'Budget', lTask: 'Task', lPage: 'Page', lAddons: 'Add-ons'
   } : {
@@ -97,7 +99,9 @@
     inReq: 'В заявке', addLbl: 'Добавить',
     socTg: 'Telegram', socWa: 'WhatsApp', socMax: 'MAX', socTel: 'Позвонить', socMail: 'Почта',
     fabAria: 'Связаться с нами',
-    addonsSub: 'Опции, которые чаще всего берут в этой услуге. Нажмите на модуль — добавим его в заявку ниже.',
+    fabTag: 'Напишите нам',
+    casesHint: 'Тяните и листайте',
+    addonsSub: 'Опции, которые чаще всего берут в этой услуге. Что-то приглянулось — просто упомяните это в заявке, и мы включим его в смету.',
     reqTitle: 'Заявка с сайта NODA',
     lService: 'Услуга', lBudget: 'Бюджет', lTask: 'Задача', lPage: 'Страница', lAddons: 'Допы'
   };
@@ -106,7 +110,7 @@
 
   /* ---------- svg icons ---------- */
   var IC = {
-    spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2" fill="currentColor" stroke="none"/></svg>',
+    bubble: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.3c0 4-4 7.2-9 7.2-.9 0-1.9-.1-2.7-.3L4.5 20l1-3.2C4 15.5 3 13.5 3 11.3 3 7.3 7 4 12 4s9 3.3 9 7.3z"/><circle cx="8.2" cy="11.4" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="11.4" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.8" cy="11.4" r="1.15" fill="currentColor" stroke="none"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     tg: '<svg viewBox="0 0 24 24" fill="#2AABEE"><path d="M21.9 4.6 18.9 19c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 6c.4-.3-.1-.5-.6-.2L7.3 12.3 2.9 11c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg>',
     wa: '<svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 13.9c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 .9-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.3.4c-.1.2-.2.3 0 .6.2.3.9 1.5 1.9 2.4 1.3 1.2 2.4 1.5 2.8 1.7.3.1.5.1.7-.1l1-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3.1.2.1.7-.1 1.4z"/></svg>',
@@ -194,8 +198,10 @@
         '</a>'
       ));
     });
+    var row = el('<div class="nx-fab-row"></div>');
+    var tag = el('<span class="nx-fab-tag">' + T.fabTag + '</span>');
     var btn = el('<button type="button" class="nx-fab" aria-expanded="false" aria-label="' + T.fabAria + '">' +
-      '<span class="nx-ic-wrap">' + IC.spark.replace('<svg', '<svg class="nx-ic-open"') + IC.close.replace('<svg', '<svg class="nx-ic-close"') + '</span></button>');
+      IC.bubble.replace('<svg', '<svg class="nx-ic-open"') + IC.close.replace('<svg', '<svg class="nx-ic-close"') + '</button>');
     btn.addEventListener('click', function () {
       var open = root.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -208,8 +214,10 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') root.classList.remove('open');
     });
+    row.appendChild(tag);
+    row.appendChild(btn);
     root.appendChild(stack);
-    root.appendChild(btn);
+    root.appendChild(row);
     document.body.appendChild(root);
   }
 
@@ -415,9 +423,16 @@
   function buildBlogSection() {
     if (EN) return; /* статьи пока только на русском */
     var path = location.pathname;
-    if (path !== '/' && path !== '/index.html') return;
+    var onHome = path === '/' || path === '/index.html';
+    if (!onHome && path.indexOf('/uslugi') !== 0) return;
     if (document.getElementById('blog-home')) return;
     var anchor = document.getElementById('zayavka') || document.getElementById('contact');
+    if (!anchor) {
+      /* pages without a form (uslugi hub): the anchor is the React-managed
+         footer — wait until hydration settles before touching that tree */
+      if (!window.__nxLoadDone) return;
+      anchor = document.querySelector('footer');
+    }
     if (!anchor) return;
 
     if (!window.NODA_BLOG) {
@@ -466,29 +481,50 @@
      ===================================================== */
   var addonHooked = false;
   function hookAddons() {
+    /* the add-ons section is informational now: no prices, no "add" toggles */
     var subEl = document.querySelector('.addons-sec .shead p');
-    if (subEl && subEl.textContent.indexOf(EN ? 'request' : 'заявку') === -1) subEl.textContent = T.addonsSub;
-    document.querySelectorAll('.addon .lbl-on').forEach(function (n) { n.textContent = T.inReq; });
+    if (subEl && subEl.textContent !== T.addonsSub) subEl.textContent = T.addonsSub;
+    document.querySelectorAll('.addon').forEach(function (a) {
+      a.removeAttribute('role');
+      a.removeAttribute('tabindex');
+    });
     if (addonHooked) return;
     addonHooked = true;
+    /* swallow clicks so the legacy calculator handlers never fire */
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('.addon');
       if (!a) return;
       e.preventDefault();
       e.stopImmediatePropagation();
-      a.classList.toggle('sel');
-      a.classList.toggle('on');
-      var names = [].map.call(document.querySelectorAll('.addon.sel'), function (x) {
-        return x.getAttribute('aria-label') || (x.querySelector('.addon-name') ? x.querySelector('.addon-name').textContent : '');
-      }).filter(Boolean);
-      var sec = document.getElementById('zayavka');
-      if (sec && sec._sync) sec._sync(names);
-      if (a.classList.contains('sel')) {
-        var z = document.getElementById('zayavka');
-        // gentle hint that the module landed in the request
-        if (z) toast((EN ? 'Added to your request: ' : 'Добавили в заявку: ') + (a.getAttribute('aria-label') || ''));
-      }
     }, true);
+  }
+
+  /* =====================================================
+     3b. cases slider on mobile: hint + working counter
+     ===================================================== */
+  function fixCasesMobile() {
+    var track = document.getElementById('htrack');
+    var cases = document.getElementById('cases');
+    if (!track || !cases || document.querySelector('.nx-chint')) return;
+    var n = track.children.length;
+    if (!n) return;
+    var hint = el('<div class="nx-chint" aria-hidden="true">' +
+      '<span class="nx-chint-ic"><i></i><i></i><i></i></span>' +
+      '<span class="nx-chint-txt">' + T.casesHint + '</span>' +
+      '<span class="nx-chint-bar"><b></b></span>' +
+      '<span class="nx-chint-count"><em>01</em>&nbsp;/&nbsp;' + String(n).padStart(2, '0') + '</span></div>');
+    cases.appendChild(hint);
+    var bar = hint.querySelector('.nx-chint-bar b');
+    var cnt = hint.querySelector('.nx-chint-count em');
+    function upd() {
+      var max = track.scrollWidth - track.clientWidth;
+      var p = max > 0 ? track.scrollLeft / max : 0;
+      bar.style.transform = 'scaleX(' + p.toFixed(3) + ')';
+      cnt.textContent = String(Math.min(n, 1 + Math.round(p * (n - 1)))).padStart(2, '0');
+    }
+    track.addEventListener('scroll', upd, { passive: true });
+    window.addEventListener('resize', upd);
+    upd();
   }
 
   /* =====================================================
@@ -581,11 +617,18 @@
      ===================================================== */
   var applyTimer = null;
   function apply() {
+    /* pages built from static HTML blocks (they carry the calculator/chat markup)
+       tolerate pre-hydration edits; fully React-rendered pages (uslugi hub,
+       privacy policy) must not be touched until hydration settles */
+    var staticPage = !!(document.getElementById('calc') || document.getElementById('chatWidget') ||
+      document.querySelector('.chat-widget') || document.getElementById('zayavka'));
+    if (!staticPage && !window.__nxLoadDone) return;
     killLegacy();
     buildLeadSection();
     buildBlogSection();
     buildFab();
     hookAddons();
+    fixCasesMobile();
     fixLinks();
   }
   function scheduleApply() {
@@ -601,6 +644,13 @@
       document.head.appendChild(cfg);
     }
     hookLegacyLead();
+    if (document.readyState === 'complete') {
+      window.__nxLoadDone = true;
+    } else {
+      window.addEventListener('load', function () {
+        setTimeout(function () { window.__nxLoadDone = true; apply(); }, 450);
+      });
+    }
     apply();
     /* re-apply if hydration re-renders parts of the page */
     var mo = new MutationObserver(function (muts) {
