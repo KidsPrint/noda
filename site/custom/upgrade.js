@@ -30,14 +30,16 @@
     fMsg: 'About the task', fMsgPh: 'A couple of sentences: what should we build and what problem does it solve?',
     services: ['Telegram bot', 'AI integration', 'Website / web-app', 'CRM', 'Analytics', 'Not sure yet'],
     budgets: ['under 50k ₽', '50–150k ₽', '150–300k ₽', '300k+ ₽', 'need advice'],
-    sendTg: 'Send via Telegram', sendWa: 'Send via WhatsApp',
     sendMain: 'Send request', sending: 'Sending…',
     orDirect: 'or message us directly:',
     okAutoTitle: 'Request sent!',
     okAutoText: 'It has already landed in our Telegram — we will reply within an hour during business hours.',
-    errAuto: 'Automatic sending failed — send it in one click via messenger:',
+    errAuto: 'Automatic sending failed — email the request instead:',
+    sendMail: 'Send by email',
+    okTextMail: 'We opened an email draft with your request — just press "Send". If it did not open, the request text is copied: paste it into an email to noda_development@mail.ru.',
+    mailSubject: 'Website request — NODA',
     legacyOk: 'Request sent! We will reply within an hour.',
-    legacyErr: 'Sending failed — we opened our Telegram chat, the request text is copied.',
+    legacyErr: 'Sending failed — we opened an email draft with your request for noda_development@mail.ru (the text is also copied).',
     consent: 'By sending the request you agree to the <a href="/en/politika-konfidencialnosti/">privacy policy</a>.',
     badge: '−30% off · until July 31',
     sideTitle: 'What happens next',
@@ -50,8 +52,6 @@
     previewLbl: 'Your request',
     previewEmpty: 'pick a service and budget above',
     okTitle: 'The request is ready!',
-    okTextTg: 'We opened the Telegram chat — the request text is already copied. Just paste it and press “Send”.',
-    okTextWa: 'We opened WhatsApp with your request prefilled. Just press “Send”.',
     again: 'Fill in again',
     errContact: 'Please leave a phone number or @username so we can reply.',
     copied: 'Request text copied — paste it into the chat',
@@ -73,14 +73,16 @@
     fMsg: 'О задаче', fMsgPh: 'Пара предложений: что хотим построить и какую проблему это решает?',
     services: ['Telegram-бот', 'Внедрение ИИ', 'Сайт / приложение', 'CRM', 'Аналитика', 'Пока не знаю'],
     budgets: ['до 50 тыс ₽', '50–150 тыс ₽', '150–300 тыс ₽', '300+ тыс ₽', 'нужен совет'],
-    sendTg: 'Отправить в Telegram', sendWa: 'Отправить в WhatsApp',
     sendMain: 'Отправить заявку', sending: 'Отправляем…',
     orDirect: 'или напишите напрямую:',
     okAutoTitle: 'Заявка отправлена!',
     okAutoText: 'Мы уже получили её в Telegram и ответим в течение часа в рабочее время.',
-    errAuto: 'Не получилось отправить автоматически — отправьте в один клик через мессенджер:',
+    errAuto: 'Не получилось отправить автоматически — отправьте заявку на нашу почту:',
+    sendMail: 'Отправить на почту',
+    okTextMail: 'Мы открыли письмо с вашей заявкой — остаётся нажать «Отправить». Если письмо не открылось — текст заявки скопирован: вставьте его в письмо на noda_development@mail.ru.',
+    mailSubject: 'Заявка с сайта NODA',
     legacyOk: 'Заявка отправлена! Ответим в течение часа.',
-    legacyErr: 'Не получилось отправить — мы открыли наш Telegram, текст заявки скопирован.',
+    legacyErr: 'Не получилось отправить автоматически — мы открыли письмо с заявкой на noda_development@mail.ru (текст также скопирован).',
     consent: 'Нажимая кнопку, вы соглашаетесь с <a href="/politika-konfidencialnosti/">политикой конфиденциальности</a>.',
     badge: 'Скидка −30% · до 31 июля',
     sideTitle: 'Что будет дальше',
@@ -93,8 +95,6 @@
     previewLbl: 'Ваша заявка',
     previewEmpty: 'выберите услугу и бюджет выше',
     okTitle: 'Заявка готова!',
-    okTextTg: 'Мы открыли чат в Telegram — текст заявки уже скопирован. Просто вставьте его и нажмите «Отправить».',
-    okTextWa: 'Мы открыли WhatsApp с заполненной заявкой. Останется нажать «Отправить».',
     again: 'Заполнить ещё раз',
     errContact: 'Оставьте телефон или @username, чтобы мы могли ответить.',
     copied: 'Текст заявки скопирован — вставьте его в чат',
@@ -277,11 +277,10 @@
       ' <a href="' + LINKS.tg + '" target="_blank" rel="noopener">Telegram</a><i>·</i><a href="' + LINKS.wa + '" target="_blank" rel="noopener">WhatsApp</a></span>');
     subRow.appendChild(bSend); subRow.appendChild(direct);
     form.appendChild(subRow);
-    /* fallback messenger buttons — shown only if the bot API call fails */
+    /* fallback email button — shown only if the bot API call fails */
     var fbRow = el('<div class="nx-fallback-row"></div>');
-    var bTg = el('<button type="button" class="nx-btn nx-btn--primary">' + IC.send + T.sendTg + '</button>');
-    var bWa = el('<button type="button" class="nx-btn nx-btn--ghost">' + IC.wa + T.sendWa + '</button>');
-    fbRow.appendChild(bTg); fbRow.appendChild(bWa);
+    var bMail = el('<button type="button" class="nx-btn nx-btn--primary">' + IC.mail.replace('stroke="#ff5ca8"', 'stroke="currentColor"') + T.sendMail + '</button>');
+    fbRow.appendChild(bMail);
     form.appendChild(fbRow);
     form.appendChild(el('<div class="nx-form-note" aria-live="polite"></div>'));
     form.appendChild(el('<p class="nx-consent">' + T.consent + '</p>'));
@@ -362,22 +361,22 @@
       return Promise.resolve(false);
     }
 
-    function sendViaTgManual() {
+    function sendViaMail() {
       var txt = compose();
       ymGoal('lead');
       copyText(txt).then(function (ok) {
         okH.textContent = T.okTitle;
-        okP.textContent = T.okTextTg;
+        okP.textContent = T.okTextMail;
         lead.classList.add('done');
         if (ok) toast(T.copied);
-        window.open(LINKS.tg, '_blank', 'noopener');
+        location.href = LINKS.mail + '?subject=' + encodeURIComponent(T.mailSubject) + '&body=' + encodeURIComponent(txt);
       });
     }
 
     bSend.addEventListener('click', function () {
       if (!validate()) return;
       var note = form.querySelector('.nx-form-note');
-      if (!leadCfg()) { sendViaTgManual(); return; }
+      if (!leadCfg()) { sendViaMail(); return; }
       bSend.disabled = true;
       note.classList.remove('err');
       note.textContent = T.sending;
@@ -396,19 +395,9 @@
       });
     });
 
-    bTg.addEventListener('click', function () {
+    bMail.addEventListener('click', function () {
       if (!validate()) return;
-      sendViaTgManual();
-    });
-
-    bWa.addEventListener('click', function () {
-      if (!validate()) return;
-      var txt = compose();
-      ymGoal('lead');
-      okH.textContent = T.okTitle;
-      okP.textContent = T.okTextWa;
-      lead.classList.add('done');
-      window.open(LINKS.wa + '?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+      sendViaMail();
     });
 
     renderPreview();
@@ -585,7 +574,7 @@
       }, function () {
         if (st) { st.style.color = '#ff8a8a'; st.textContent = T.legacyErr; }
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).catch(function () {});
-        window.open(LINKS.tg, '_blank', 'noopener');
+        location.href = LINKS.mail + '?subject=' + encodeURIComponent(T.mailSubject) + '&body=' + encodeURIComponent(txt);
       });
     }, true);
   }
