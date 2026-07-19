@@ -199,7 +199,6 @@
       ));
     });
     var row = el('<div class="nx-fab-row"></div>');
-    var tag = el('<span class="nx-fab-tag">' + T.fabTag + '</span>');
     var btn = el('<button type="button" class="nx-fab" aria-expanded="false" aria-label="' + T.fabAria + '">' +
       IC.bubble.replace('<svg', '<svg class="nx-ic-open"') + IC.close.replace('<svg', '<svg class="nx-ic-close"') + '</button>');
     btn.addEventListener('click', function () {
@@ -214,7 +213,6 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') root.classList.remove('open');
     });
-    row.appendChild(tag);
     row.appendChild(btn);
     root.appendChild(stack);
     root.appendChild(row);
@@ -488,6 +486,9 @@
       a.removeAttribute('role');
       a.removeAttribute('tabindex');
     });
+    /* the cards use a scroll-reveal animation; force all six visible so none
+       of them can get stuck transparent on real devices */
+    document.querySelectorAll('.addons-sec [data-reveal]').forEach(function (n) { n.classList.add('in'); });
     if (addonHooked) return;
     addonHooked = true;
     /* swallow clicks so the legacy calculator handlers never fire */

@@ -27,25 +27,6 @@
   align-items: center;
   gap: 12px;
 }
-.nx-fab-tag {
-  font: 600 13px/1 Inter, system-ui, sans-serif;
-  color: #ececf1;
-  background: rgba(14,14,22,.92);
-  border: 1px solid rgba(139,124,255,.35);
-  backdrop-filter: blur(12px);
-  padding: 9px 14px;
-  border-radius: 999px;
-  white-space: nowrap;
-  box-shadow: 0 4px 18px rgba(0,0,0,.4);
-  animation: nx-tagfloat 3.4s ease-in-out infinite;
-  transition: opacity .3s, transform .3s;
-}
-@keyframes nx-tagfloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-.nx-fab-root.open .nx-fab-tag { opacity: 0; transform: translateX(8px); pointer-events: none; }
-
 .nx-fab {
   position: relative;
   width: 64px;
@@ -646,4 +627,17 @@
   .nx-success { min-height: 300px; padding: 28px 14px; }
   .nx-check { width: 68px; height: 68px; margin-bottom: 18px; }
   .nx-lead-sec .shead p { font-size: 14px; }
+}
+
+/* ============ v3 fixes ============ */
+/* all six add-on cards always visible (reveal animation can strand them hidden) */
+.addons-sec [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
+
+/* tighter rhythm before the blog block (previous section already adds ~90px) */
+#blog-home.pad { padding-top: clamp(18px, 3vw, 40px); }
+
+/* mobile: shrink the empty band under the cases slider */
+@media (max-width: 880px) {
+  .horizontal { padding-bottom: 26px !important; }
+  .statement { padding: 54px 0 !important; }
 }
