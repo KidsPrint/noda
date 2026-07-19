@@ -47,11 +47,12 @@
       a.style.setProperty('--i', i);
       mmInner.appendChild(a);
     });
-    var cta = document.createElement('a');
-    cta.href = '/#zayavka';
+    var cta = document.createElement('button');
+    cta.type = 'button';
     cta.className = 'btn btn-primary mm-cta';
     cta.textContent = 'Обсудить проект';
     cta.style.setProperty('--i', items.length);
+    cta.addEventListener('click', function () { location.href = '/#zayavka'; });
     mmInner.appendChild(cta);
     menu.appendChild(mmInner);
     document.body.appendChild(menu);

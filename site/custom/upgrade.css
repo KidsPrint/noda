@@ -693,3 +693,8 @@
   #blog-home.pad { padding-top: 16px !important; }
   .nx-lead-sec.pad { padding-top: clamp(44px, 12vw, 56px) !important; }
 }
+
+/* mobile header: phone button same size as the burger (46x46) */
+@media (max-width: 900px) {
+  #nav .nav-phone { width: 46px; height: 46px; }
+}
