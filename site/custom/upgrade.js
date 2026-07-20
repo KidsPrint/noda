@@ -169,10 +169,10 @@
       return true;
     });
   }
-  /* delivery chain: Telegram bot → email; rejects only if both fail */
+  /* delivery chain: email first → Telegram bot as silent backup;
+     rejects only if both fail */
   function deliverLead(text) {
-    if (!leadCfg()) return sendToMail(text);
-    return sendToBot(text).catch(function () { return sendToMail(text); });
+    return sendToMail(text).catch(function () { return sendToBot(text); });
   }
 
   /* =====================================================
