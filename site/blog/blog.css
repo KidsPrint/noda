@@ -328,5 +328,9 @@ a{color:inherit}
 .bviews svg{width:13px;height:13px}
 
 /* ---------- offset under the fixed site header (original .nav) ---------- */
-main.wrap, .kwrap { margin-top: 84px; }
-@media (min-width: 881px) { main.wrap, .kwrap { margin-top: 132px; } }
+main.wrap, .kwrap { margin-top: 100px; }
+@media (min-width: 881px) { main.wrap, .kwrap { margin-top: 152px; } }
+
+/* blog only: denser scrolled-header background (content sits closer to the
+   top here, the default 60% opacity lets text bleed through both rows) */
+.nav.scrolled { background: rgba(8, 8, 12, .94) !important; }
