@@ -11,6 +11,13 @@
     var inn = nav && nav.querySelector('.nav-in');
     if (!inn || document.querySelector('.nav-burger')) return;
 
+    /* фон шапки при прокрутке — как на главной (.scrolled после 40px) */
+    function onScroll() {
+      nav.classList.toggle('scrolled', (window.scrollY || document.documentElement.scrollTop) > 40);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
     /* --- переключатель языка (RU активен; EN ведёт на английскую главную) --- */
     if (!nav.querySelector('.lang-switch')) {
       var sw = document.createElement('div');
