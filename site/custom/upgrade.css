@@ -808,3 +808,47 @@
 @keyframes nx-marq { to { transform: translateX(-50%); } }
 .marquee:hover .nx-mqt { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .nx-mqt { animation: none; } }
+
+/* ============ INTEGRATIONS · mobile chips variant (<768px) ============ */
+.nx-fr-mobsub, .nx-fr-groups, .nx-fr-note--m { display: none; }
+@media (max-width: 767px) {
+  .nx-fr-grid, .nx-fr-sub, .nx-fr-note--d { display: none !important; }
+  .nx-fr-mobsub {
+    display: block;
+    color: #8b8b96;
+    font-size: 14px;
+    line-height: 1.45;
+    max-width: 34ch;
+    margin-top: 2px;
+  }
+  .nx-fr .shead { margin-bottom: 20px; }
+  .nx-fr-groups { display: block; }
+  .nx-fr-group { margin-bottom: 16px; }
+  .nx-fr-group:last-child { margin-bottom: 0; }
+  .nx-fr-glabel {
+    font: 600 11px/1 Inter, system-ui, sans-serif;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: #6e6e78;
+    margin: 0 0 8px;
+  }
+  .nx-fr-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .nx-fr-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 999px;
+    padding: 7px 13px 7px 8px;
+  }
+  .nx-fr-chip img { width: 16px; height: 16px; display: block; border-radius: 50%; }
+  .nx-fr-chip span { font: 500 13px/1 Inter, system-ui, sans-serif; color: #fff; white-space: nowrap; }
+  .nx-fr-note--m {
+    display: block;
+    margin-top: 20px;
+    color: #66666e;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}

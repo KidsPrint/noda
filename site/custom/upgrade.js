@@ -507,6 +507,15 @@
     '/uslugi/sajty-i-prilozheniya/': {
       sub: 'Сайт, бот и CRM работают одной связкой: подключаем сервисы, которыми вы уже пользуетесь, — заявки, оплаты и аналитика в одном контуре',
       note: 'Нет вашего сервиса в списке? Если у него есть API — подключим. Просто упомяните его в заявке.',
+      mobSub: 'Заявки, оплаты и аналитика — в одном контуре',
+      mobNote: 'Нет вашего сервиса в списке? Если у него есть API — подключим. Просто упомяните его в заявке.',
+      groups: [
+        ['CRM', ['amoCRM', 'Битрикс24']],
+        ['Мессенджеры', ['Telegram', 'WhatsApp', 'MAX']],
+        ['Оплата', ['ЮKassa', 'СБП', 'Robokassa']],
+        ['Данные и учёт', ['1С', 'Google Sheets']],
+        ['Аналитика', ['Яндекс Метрика', 'Roistat']]
+      ],
       items: [
         ['amoCRM', 'CRM', 'amocrm'],
         ['Битрикс24', 'CRM', 'bitrix24'],
@@ -525,6 +534,14 @@
     '/uslugi/vnedrenie-ii/': {
       sub: 'Подбираем нейросеть под задачу и бюджет — и встраиваем туда, где уже живут ваши клиенты и данные: в мессенджеры, на сайт и в CRM',
       note: 'Какая модель подойдёт именно вам — российская, когда важно хранение данных в РФ, или зарубежная, когда нужен максимум качества, — скажем прямо на первом созвоне.',
+      mobSub: 'Подбираем нейросеть под задачу — и встраиваем туда, где живут ваши клиенты',
+      mobNote: 'Какая модель подойдёт именно вам — российская или зарубежная — скажем прямо на первом созвоне.',
+      groups: [
+        ['Нейросети', ['GigaChat', 'YandexGPT', 'ChatGPT', 'Claude', 'DeepSeek']],
+        ['Каналы', ['Telegram', 'WhatsApp', 'MAX']],
+        ['CRM и учёт', ['amoCRM', 'Битрикс24', '1С']],
+        ['Автоматизация', ['n8n']]
+      ],
       items: [
         ['GigaChat', 'нейросети · данные в РФ', 'gigachat'],
         ['YandexGPT', 'нейросети · данные в РФ', 'yandexgpt'],
@@ -551,19 +568,32 @@
     if (!cfg || document.getElementById('friends')) return;
     var hero = document.querySelector('section.hero');
     if (!hero || !hero.parentNode) return;
+    var byName = {};
+    cfg.items.forEach(function (it) { byName[it[0]] = it; });
     var cards = cfg.items.map(function (it) {
       return '<div class="nx-fr-card">' +
         '<span class="nx-fr-logo"><img src="/custom/logos/' + it[2] + '.svg" alt="' + it[0] + '" width="40" height="40" loading="lazy"></span>' +
         '<span class="nx-fr-txt"><b>' + it[0] + '</b><i>' + it[1] + '</i></span></div>';
     }).join('');
+    /* mobile variant: chips grouped by category (shown < 768px) */
+    var groups = cfg.groups.map(function (g) {
+      var chips = g[1].map(function (name) {
+        var it = byName[name];
+        return '<span class="nx-fr-chip"><img src="/custom/logos/' + it[2] + '.svg" alt="' + it[0] + '" width="16" height="16" loading="lazy"><span>' + it[0] + '</span></span>';
+      }).join('');
+      return '<div class="nx-fr-group"><p class="nx-fr-glabel">' + g[0] + '</p><div class="nx-fr-chips">' + chips + '</div></div>';
+    }).join('');
     var sec = el('<section class="pad nx-fr" id="friends"><div class="wrap">' +
       '<div class="shead">' +
         '<span class="eyebrow" style="opacity:1;transform:none">Интеграции</span>' +
         '<h2 class="disp" style="opacity:1;transform:none">С чем мы дружим</h2>' +
-        '<p style="opacity:1;transform:none">' + cfg.sub + '</p>' +
+        '<p class="nx-fr-sub" style="opacity:1;transform:none">' + cfg.sub + '</p>' +
+        '<p class="nx-fr-mobsub">' + cfg.mobSub + '</p>' +
       '</div>' +
       '<div class="nx-fr-grid">' + cards + '</div>' +
-      '<p class="nx-fr-note">' + cfg.note + '</p>' +
+      '<div class="nx-fr-groups">' + groups + '</div>' +
+      '<p class="nx-fr-note nx-fr-note--d">' + cfg.note + '</p>' +
+      '<p class="nx-fr-note nx-fr-note--m">' + cfg.mobNote + '</p>' +
     '</div></section>');
     hero.parentNode.insertBefore(sec, hero.nextElementSibling);
   }
@@ -573,11 +603,17 @@
     if (pageKey() !== '/uslugi/sajty-i-prilozheniya/') return;
     var box = document.querySelector('.addons-sec .addons');
     if (!box || box.querySelector('.nx-ai-addon')) return;
-    box.appendChild(el('<article class="addon nx-ai-addon in" aria-label="ИИ-чат консультант">' +
+    box.insertBefore(el('<article class="addon nx-ai-addon in" aria-label="ИИ-чат консультант">' +
       '<span class="addon-node"></span>' +
-      '<div class="addon-top"><span class="addon-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.4c0 3.8-3.7 6.9-8.3 6.9-.9 0-1.9-.1-2.7-.4L6 19.4l1.1-3A6.8 6.8 0 0 1 4 11.4C4 7.6 7.7 4.5 12.4 4.5S21 7.6 21 11.4z"/><path d="M12.4 8.2l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z" fill="currentColor" stroke="none"/></svg></span><span class="addon-idx">07</span></div>' +
+      '<div class="addon-top"><span class="addon-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.4c0 3.8-3.7 6.9-8.3 6.9-.9 0-1.9-.1-2.7-.4L6 19.4l1.1-3A6.8 6.8 0 0 1 4 11.4C4 7.6 7.7 4.5 12.4 4.5S21 7.6 21 11.4z"/><path d="M12.4 8.2l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z" fill="currentColor" stroke="none"/></svg></span><span class="addon-idx">01</span></div>' +
       '<h3>ИИ-чат консультант</h3><p>Отвечает посетителям круглосуточно, помогает выбрать и доводит до заявки — пока менеджеры спят.</p>' +
-      '</article>'));
+      '</article>'), box.firstElementChild);
+    /* renumber all cards after inserting at the top */
+    var idx = 0;
+    box.querySelectorAll('.addon .addon-idx').forEach(function (n) {
+      idx += 1;
+      n.textContent = (idx < 10 ? '0' : '') + idx;
+    });
   }
 
   /* =====================================================
