@@ -603,6 +603,13 @@
     if (pageKey() !== '/uslugi/sajty-i-prilozheniya/') return;
     var box = document.querySelector('.addons-sec .addons');
     if (!box || box.querySelector('.nx-ai-addon')) return;
+    /* drop the weakest card so the grid stays two clean rows of three */
+    box.querySelectorAll('.addon h3').forEach(function (h) {
+      if (h.textContent.trim() === 'Анимации и вау-эффекты') {
+        var card = h.closest('.addon');
+        if (card) card.remove();
+      }
+    });
     box.insertBefore(el('<article class="addon nx-ai-addon in" aria-label="ИИ-чат консультант">' +
       '<span class="addon-node"></span>' +
       '<div class="addon-top"><span class="addon-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.4c0 3.8-3.7 6.9-8.3 6.9-.9 0-1.9-.1-2.7-.4L6 19.4l1.1-3A6.8 6.8 0 0 1 4 11.4C4 7.6 7.7 4.5 12.4 4.5S21 7.6 21 11.4z"/><path d="M12.4 8.2l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z" fill="currentColor" stroke="none"/></svg></span><span class="addon-idx">01</span></div>' +
