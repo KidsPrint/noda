@@ -698,3 +698,113 @@
 @media (max-width: 900px) {
   #nav .nav-phone { width: 46px; height: 46px; }
 }
+
+/* ============ INTEGRATIONS · «С чем мы дружим» ============ */
+.nx-fr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding-bottom: 18px; /* room for the staggered columns */
+}
+@media (max-width: 1000px) { .nx-fr-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .nx-fr-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+.nx-fr-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.045), rgba(255,255,255,.015)) padding-box,
+    linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.04)) border-box;
+  transition: transform .3s cubic-bezier(.2,.7,.15,1), background .3s, box-shadow .3s;
+}
+/* живой шахматный ритм колонок */
+@media (min-width: 1001px) {
+  .nx-fr-card:nth-child(4n+2), .nx-fr-card:nth-child(4n+4) { transform: translateY(16px); }
+  .nx-fr-card:nth-child(4n+2):hover, .nx-fr-card:nth-child(4n+4):hover { transform: translateY(13px); }
+}
+@media (min-width: 641px) and (max-width: 1000px) {
+  .nx-fr-card:nth-child(3n+2) { transform: translateY(14px); }
+  .nx-fr-card:nth-child(3n+2):hover { transform: translateY(11px); }
+}
+@media (max-width: 640px) {
+  .nx-fr-card:nth-child(2n) { transform: translateY(12px); }
+}
+.nx-fr-card:hover {
+  transform: translateY(-3px);
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02)) padding-box,
+    linear-gradient(120deg, #8b7cff, #5ac8ff 45%, #ff79c0) border-box;
+  box-shadow: 0 10px 34px rgba(123,92,255,.18);
+}
+
+.nx-fr-logo {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.09);
+}
+.nx-fr-logo img { width: 26px; height: 26px; display: block; }
+.nx-fr-txt { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.nx-fr-txt b { font: 600 14.5px/1.25 Inter, system-ui, sans-serif; color: #ececf1; }
+.nx-fr-txt i { font: 500 11.5px/1.3 Inter, system-ui, sans-serif; font-style: normal; color: #74748a; }
+@media (max-width: 640px) {
+  .nx-fr-card { padding: 12px 12px; gap: 10px; border-radius: 15px; }
+  .nx-fr-logo { flex-basis: 34px; width: 34px; height: 34px; }
+  .nx-fr-logo img { width: 22px; height: 22px; }
+  .nx-fr-txt b { font-size: 12.5px; }
+  .nx-fr-txt i { font-size: 10.5px; }
+}
+.nx-fr-note {
+  margin-top: 16px;
+  color: #74748a;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ============ TECH MARQUEE · compact fast strip ============ */
+.pad-tech { padding-top: 26px !important; padding-bottom: 26px !important; }
+.pad-tech .shead { margin-bottom: 4px; }
+.pad-tech .shead h2, .pad-tech .shead p { display: none !important; }
+.pad-tech .shead .eyebrow { opacity: 1 !important; transform: none !important; filter: none !important; }
+.pad-tech .marquee { padding: 16px 0; }
+.pad-tech .marquee-2x { gap: 12px; }
+
+.nx-mqt {
+  display: flex;
+  gap: 54px;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+  animation: nx-marq 30s linear infinite;
+}
+.nx-mqt.rev { animation-direction: reverse; }
+.nx-half { display: flex; gap: 54px; }
+.nx-mqt span.s {
+  font-family: Unbounded, sans-serif;
+  font-weight: 300;
+  font-size: clamp(18px, 2.6vw, 26px);
+  color: var(--muted, #9a9aac);
+  display: flex;
+  align-items: center;
+  gap: 54px;
+}
+.nx-mqt span.s b {
+  color: transparent;
+  background: linear-gradient(120deg, #8b7cff, #5ac8ff 45%, #ff79c0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: 500;
+}
+.nx-mqt .s:after { content: "✦"; color: #7b5cff; font-size: 13px; }
+@keyframes nx-marq { to { transform: translateX(-50%); } }
+.marquee:hover .nx-mqt { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .nx-mqt { animation: none; } }

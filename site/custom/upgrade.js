@@ -501,6 +501,129 @@
   }
 
   /* =====================================================
+     3a2. "С чем мы дружим" — integrations grid (2 pages)
+     ===================================================== */
+  var FRIENDS = {
+    '/uslugi/sajty-i-prilozheniya/': {
+      sub: 'Сайт, бот и CRM работают одной связкой: подключаем сервисы, которыми вы уже пользуетесь, — заявки, оплаты и аналитика в одном контуре',
+      note: 'Нет вашего сервиса в списке? Если у него есть API — подключим. Просто упомяните его в заявке.',
+      items: [
+        ['amoCRM', 'CRM', 'amocrm'],
+        ['Битрикс24', 'CRM', 'bitrix24'],
+        ['Telegram', 'мессенджеры', 'telegram'],
+        ['WhatsApp', 'мессенджеры', 'whatsapp'],
+        ['MAX', 'мессенджеры', 'max'],
+        ['ЮKassa', 'оплата', 'yookassa'],
+        ['СБП', 'оплата', 'sbp'],
+        ['Robokassa', 'оплата', 'robokassa'],
+        ['1С', 'учёт', '1c'],
+        ['Google Sheets', 'данные', 'gsheets'],
+        ['Яндекс Метрика', 'аналитика', 'metrika'],
+        ['Roistat', 'сквозная аналитика', 'roistat']
+      ]
+    },
+    '/uslugi/vnedrenie-ii/': {
+      sub: 'Подбираем нейросеть под задачу и бюджет — и встраиваем туда, где уже живут ваши клиенты и данные: в мессенджеры, на сайт и в CRM',
+      note: 'Какая модель подойдёт именно вам — российская, когда важно хранение данных в РФ, или зарубежная, когда нужен максимум качества, — скажем прямо на первом созвоне.',
+      items: [
+        ['GigaChat', 'нейросети · данные в РФ', 'gigachat'],
+        ['YandexGPT', 'нейросети · данные в РФ', 'yandexgpt'],
+        ['ChatGPT', 'нейросети', 'chatgpt'],
+        ['Claude', 'нейросети', 'claude'],
+        ['DeepSeek', 'нейросети', 'deepseek'],
+        ['Telegram', 'каналы', 'telegram'],
+        ['WhatsApp', 'каналы', 'whatsapp'],
+        ['MAX', 'каналы', 'max'],
+        ['amoCRM', 'CRM', 'amocrm'],
+        ['Битрикс24', 'CRM', 'bitrix24'],
+        ['1С', 'данные и учёт', '1c'],
+        ['n8n', 'автоматизация', 'n8n']
+      ]
+    }
+  };
+  function pageKey() {
+    var p = location.pathname.replace(/index\.html$/, '');
+    if (p.charAt(p.length - 1) !== '/') p += '/';
+    return p;
+  }
+  function buildFriends() {
+    var cfg = FRIENDS[pageKey()];
+    if (!cfg || document.getElementById('friends')) return;
+    var hero = document.querySelector('section.hero');
+    if (!hero || !hero.parentNode) return;
+    var cards = cfg.items.map(function (it) {
+      return '<div class="nx-fr-card">' +
+        '<span class="nx-fr-logo"><img src="/custom/logos/' + it[2] + '.svg" alt="' + it[0] + '" width="40" height="40" loading="lazy"></span>' +
+        '<span class="nx-fr-txt"><b>' + it[0] + '</b><i>' + it[1] + '</i></span></div>';
+    }).join('');
+    var sec = el('<section class="pad nx-fr" id="friends"><div class="wrap">' +
+      '<div class="shead">' +
+        '<span class="eyebrow" style="opacity:1;transform:none">Интеграции</span>' +
+        '<h2 class="disp" style="opacity:1;transform:none">С чем мы дружим</h2>' +
+        '<p style="opacity:1;transform:none">' + cfg.sub + '</p>' +
+      '</div>' +
+      '<div class="nx-fr-grid">' + cards + '</div>' +
+      '<p class="nx-fr-note">' + cfg.note + '</p>' +
+    '</div></section>');
+    hero.parentNode.insertBefore(sec, hero.nextElementSibling);
+  }
+
+  /* 7th add-on card «ИИ-чат консультант» on the websites page */
+  function addAiAddon() {
+    if (pageKey() !== '/uslugi/sajty-i-prilozheniya/') return;
+    var box = document.querySelector('.addons-sec .addons');
+    if (!box || box.querySelector('.nx-ai-addon')) return;
+    box.appendChild(el('<article class="addon nx-ai-addon in" aria-label="ИИ-чат консультант">' +
+      '<span class="addon-node"></span>' +
+      '<div class="addon-top"><span class="addon-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.4c0 3.8-3.7 6.9-8.3 6.9-.9 0-1.9-.1-2.7-.4L6 19.4l1.1-3A6.8 6.8 0 0 1 4 11.4C4 7.6 7.7 4.5 12.4 4.5S21 7.6 21 11.4z"/><path d="M12.4 8.2l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z" fill="currentColor" stroke="none"/></svg></span><span class="addon-idx">07</span></div>' +
+      '<h3>ИИ-чат консультант</h3><p>Отвечает посетителям круглосуточно, помогает выбрать и доводит до заявки — пока менеджеры спят.</p>' +
+      '</article>'));
+  }
+
+  /* =====================================================
+     3a3. tech marquee: compact strip between FAQ and CTA,
+     2x faster, CSS-driven (hover pause + reduced motion)
+     ===================================================== */
+  var AI_STACK = ['Python', 'FastAPI', 'LangChain', 'LlamaIndex', 'RAG', 'Qdrant', 'Pinecone', 'Hugging Face', 'Whisper', 'Эмбеддинги', 'Fine-tuning', 'Vision'];
+  function reworkTech() {
+    var tech = document.querySelector('.pad-tech');
+    if (!tech || tech.getAttribute('data-nx-done')) return;
+    var tracks = [].slice.call(tech.querySelectorAll('.mq-track'));
+    if (!tracks.length) return;
+    var isAiPage = pageKey() === '/uslugi/vnedrenie-ii/';
+    tracks.forEach(function (t, ti) {
+      /* detach from the site's rAF marquee before it initializes */
+      t.classList.remove('mq-track');
+      t.classList.add('nx-mqt');
+      if (ti === 1) t.classList.add('rev');
+      t.removeAttribute('data-dir');
+      t.removeAttribute('data-speed');
+      t.style.transform = '';
+      var names;
+      if (isAiPage) {
+        names = ti === 0 ? AI_STACK : AI_STACK.slice().reverse();
+      } else {
+        var spans = [].slice.call(t.querySelectorAll('.s'));
+        names = spans.slice(0, Math.ceil(spans.length / 2)).map(function (s) { return s.innerHTML; });
+      }
+      var half = names.map(function (n, i) {
+        var inner = /</.test(n) ? n : (i % 3 === 1 ? '<b>' + n + '</b>' : n);
+        return '<span class="s">' + inner + '</span>';
+      }).join('');
+      t.innerHTML = '<div class="nx-half">' + half + '</div><div class="nx-half" aria-hidden="true">' + half + '</div>';
+    });
+    var eye = tech.querySelector('.shead .eyebrow');
+    if (eye) eye.textContent = EN ? 'Technologies' : 'Технологии';
+    tech.setAttribute('data-nx-done', '1');
+    /* move: between the FAQ section and the closing CTA */
+    var faq = document.querySelector('.faq');
+    var faqSec = faq && faq.closest('section');
+    if (faqSec && faqSec.parentNode) {
+      faqSec.parentNode.insertBefore(tech, faqSec.nextElementSibling);
+    }
+  }
+
+  /* =====================================================
      3b. themed artwork inside the case panels
      ===================================================== */
   function decorateCases() {
@@ -658,6 +781,9 @@
     buildBlogSection();
     buildFab();
     hookAddons();
+    buildFriends();
+    addAiAddon();
+    reworkTech();
     decorateCases();
     hookLangSwitch();
     fixCasesMobile();
