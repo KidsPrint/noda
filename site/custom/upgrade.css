@@ -806,8 +806,6 @@
 }
 .nx-mqt .s:after { content: "✦"; color: #7b5cff; font-size: 13px; }
 @keyframes nx-marq { to { transform: translateX(-50%); } }
-.marquee:hover .nx-mqt { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) { .nx-mqt { animation: none; } }
 
 /* ============ INTEGRATIONS · mobile chips variant (<768px) ============ */
 .nx-fr-mobsub, .nx-fr-groups, .nx-fr-note--m { display: none; }
