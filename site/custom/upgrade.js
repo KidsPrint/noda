@@ -157,8 +157,20 @@
       return true;
     });
   }
-  /* silent email backup (FormSubmit) — fires automatically when the bot is unreachable */
   var MAIL_TO = 'noda_development@mail.ru';
+  /* primary channel: our own PHP endpoint (same domain — ad-blockers and
+     ISPs don't cut it, unlike third-party services) */
+  function sendToPhp(text) {
+    return fetch('/mail.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, _subject: T.mailSubject })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || String(j.success) !== 'true') throw new Error('php-mail');
+      return true;
+    });
+  }
+  /* FormSubmit — temporarily disabled; kept so it can be re-enabled in one line */
   function sendToMail(text) {
     return fetch('https://formsubmit.co/ajax/' + MAIL_TO, {
       method: 'POST',
@@ -169,10 +181,10 @@
       return true;
     });
   }
-  /* delivery chain: email first → Telegram bot as silent backup;
+  /* delivery chain: our PHP mailer → Telegram bot as silent backup;
      rejects only if both fail */
   function deliverLead(text) {
-    return sendToMail(text).catch(function () { return sendToBot(text); });
+    return sendToPhp(text).catch(function () { return sendToBot(text); });
   }
 
   /* =====================================================
