@@ -460,6 +460,10 @@
         '</span></a>';
     }).join('');
 
+    /* final carousel slide (mobile only): "all articles" card */
+    cards += '<a class="nxb-card nxb-card--all" href="/blog/">' +
+      '<span class="nxb-all-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
+      '<b>Все статьи</b><span>практика, цифры, разборы</span></a>';
     var sec = el('<section class="pad nxb-sec" id="blog-home"><div class="wrap">' +
       '<div class="shead">' +
         '<span class="eyebrow" style="opacity:1;transform:none">Блог</span>' +
